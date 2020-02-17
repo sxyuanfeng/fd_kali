@@ -4,7 +4,8 @@
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item style="font-size: 20px;">男女比例</el-breadcrumb-item>
             </el-breadcrumb>
-            <div id="gender"></div>
+            <div id="follow-gender"></div>
+            <div id="follow-rank"></div>
             <p>1</p>
             <p>1</p>
             <p>1</p>
@@ -23,7 +24,7 @@
 
 <script>
 import G2 from '@antv/g2';
-import { getAccountValue } from '../../../api/account-value/index';
+import { getFollowGender, getFollowRank } from '../../../api/account-value/index';
 
 export default {
     data() {
@@ -32,10 +33,15 @@ export default {
         }
     },
     created() {
-        getAccountValue().then(
+        getFollowGender({'master_name': '乐拉啊啊啊'}).then(
             res => {
                 this.chartData = res;
                 console.log('数据更新完毕');
+            }
+        ),
+        getFollowRank({'master_name': '乐拉啊啊啊'}).then(
+            res => {
+                console.log(res);
             }
         )
     },
@@ -50,7 +56,7 @@ export default {
         },
         paintChart() {
             let chart = new G2.Chart({
-                container: 'gender',
+                container: 'follow-gender',
                 forceFit: true,
                 height: 400,
             });
