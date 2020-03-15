@@ -95,9 +95,11 @@ export default {
         }
     },
     methods: {
+        /*
         handleClick(tab, event) {
             console.log(tab, event);
         },
+        */
         paintGenderChart() {
             let chart = new G2.Chart({
                 container: 'fan-gender',

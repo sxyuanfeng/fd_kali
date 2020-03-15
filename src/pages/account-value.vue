@@ -1,6 +1,6 @@
 <template>
     <div class="account-value-wrapper">
-        <el-row :gutter="20">
+        <el-row :gutter="15">
             <account-info></account-info>
             <account-chart></account-chart>
         </el-row>
@@ -18,3 +18,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.account-value-wrapper {
+    background: #F8F9F9;
+    padding: 15px;
+}
+</style>
