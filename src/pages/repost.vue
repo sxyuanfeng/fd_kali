@@ -1,23 +1,23 @@
 <template>
-    <div class="hottag-wrapper">
+    <div class="repost-wrapper">
         <el-row :gutter="15">
-            <hottag-chart></hottag-chart>
+            <repost-chart></repost-chart>
         </el-row>
     </div>
 </template>
 
 <script>
-import HottagChart from '../components/hot-tag/hottag-chart';
+import RepostChart from '../components/repost/repost-chart';
 
 export default {
     components: {
-        HottagChart,
+        RepostChart,
     }
 }
 </script>
 
 <style scoped>
-.hottag-wrapper {
+.repost-wrapper {
     background: #F8F9F9;
     padding: 15px;
 }

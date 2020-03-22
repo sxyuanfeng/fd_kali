@@ -94,9 +94,10 @@ export default {
         }
     },
     methods: {
+        /**
         handleClick(tab, event) {
             console.log(tab, event);
-        },
+        },*/
         paintGenderChart() {
             let chart = new G2.Chart({
                 container: 'follow-gender',
@@ -146,7 +147,7 @@ export default {
                 container: 'follow-rank',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.followRankData);
             chart.scale('value', {
@@ -184,7 +185,7 @@ export default {
                 container: 'follow-follow-count',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.followFollowCountData);
             chart.scale('value', {
@@ -222,7 +223,7 @@ export default {
                 container: 'follow-follower-count',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.followFollowerCountData);
             chart.scale('value', {
@@ -260,7 +261,7 @@ export default {
                 container: 'follow-status-count',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.followStatusCountData);
             chart.scale('value', {

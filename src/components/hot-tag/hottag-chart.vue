@@ -1,5 +1,5 @@
 <template>
-    <div class="account-chart-wrapper">
+    <div class="hottag-chart-wrapper">
         <el-col :span="24">
             <el-card shadow="hover" class="account-chart-card">
                 <el-tabs v-model="activeName" @tab-click="handleClick">

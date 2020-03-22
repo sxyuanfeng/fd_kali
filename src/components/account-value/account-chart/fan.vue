@@ -105,6 +105,7 @@ export default {
                 container: 'fan-gender',
                 forceFit: true,
                 height: 400,
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.fanGenderData, {
                 percent: {
@@ -149,7 +150,7 @@ export default {
                 container: 'fan-rank',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.fanRankData);
             chart.scale('value', {
@@ -187,7 +188,7 @@ export default {
                 container: 'fan-follow-count',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.fanFollowCountData);
             chart.scale('value', {
@@ -225,7 +226,7 @@ export default {
                 container: 'fan-follower-count',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.fanFollowerCountData);
             chart.scale('value', {
@@ -263,7 +264,7 @@ export default {
                 container: 'fan-status-count',
                 forceFit: true,
                 height: 500,
-                padding: [ 20, 20, 50, 20 ]
+                padding: [ 50, 20, 50, 20 ]
             });
             chart.source(this.fanStatusCountData);
             chart.scale('value', {

@@ -133,3 +133,27 @@ export function getFanStatusCount(params) {
     })
 }
 
+export function getMasterStatusesTimeline(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.masterStatusesTimeline, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getMasterStatusesIndex(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.masterStatusesIndex, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+

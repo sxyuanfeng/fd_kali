@@ -10,4 +10,6 @@ export default {
     fanFollowerCount: '/api/fanfollowercount',
     followStatusCount: '/api/followstatuscount',
     fanStatusCount: '/api/fanstatuscount',
+    masterStatusesTimeline: '/api/masterstatusestimeline',
+    masterStatusesIndex: '/api/masterstatusesindex',
 };
