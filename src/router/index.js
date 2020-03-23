@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import AccountValue from '../pages/account-value'
+import AccountValue from '../pages/account-value';
+import AccountValueSearch from '../pages/search/account-value-search';
 import HotTag from '../pages/hot-tag';
 import Repost from '../pages/repost';
 
@@ -9,6 +10,10 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
+        component: AccountValueSearch,
+    },
+    {
+        path: '/accountvalue',
         component: AccountValue,
         children: [
             {

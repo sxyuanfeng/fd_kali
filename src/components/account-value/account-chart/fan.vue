@@ -15,19 +15,19 @@
             </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">关注的关注数分布</el-breadcrumb-item>
+                    <el-breadcrumb-item style="font-size: 20px;">粉丝的关注数分布</el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="fan-follow-count"></div>
             </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">关注的粉丝数分布</el-breadcrumb-item>
+                    <el-breadcrumb-item style="font-size: 20px;">粉丝的粉丝数分布</el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="fan-follower-count"></div>
             </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">关注的微博数分布</el-breadcrumb-item>
+                    <el-breadcrumb-item style="font-size: 20px;">粉丝的微博数分布</el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="fan-status-count"></div>
             </div>
@@ -51,29 +51,39 @@ export default {
         }
     },
     created() {
-        getFanGender({'master_name': '乐拉啊啊啊'}).then(
+        getFanGender({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.fanGenderData = res;
+                if (res.Code === 1) {
+                    this.fanGenderData = res.Data;
+                }
             }
         ),
-        getFanRank({'master_name': '乐拉啊啊啊'}).then(
+        getFanRank({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.fanRankData = res;
+                if (res.Code === 1) {
+                    this.fanRankData = res.Data;
+                }
             }
         ),
-        getFanFollowCount({'master_name': '乐拉啊啊啊'}).then(
+        getFanFollowCount({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.fanFollowCountData = res;
+                if (res.Code === 1) {
+                    this.fanFollowCountData = res.Data;
+                }
             }
         ),
-        getFanFollowerCount({'master_name': '乐拉啊啊啊'}).then(
+        getFanFollowerCount({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.fanFollowerCountData = res;
+                if (res.Code === 1) {
+                    this.fanFollowerCountData = res.Data;
+                }
             }
         ),
-        getFanStatusCount({'master_name': '乐拉啊啊啊'}).then(
+        getFanStatusCount({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.fanStatusCountData = res;
+                if (res.Code === 1) {
+                    this.fanStatusCountData = res.Data;
+                }
             }
         )
     },

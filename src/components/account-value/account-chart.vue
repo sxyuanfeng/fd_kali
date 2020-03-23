@@ -17,22 +17,37 @@
 <script>
 
 export default {
+    props: {
+        accountMid: {
+            type: Number,
+        },
+    },
     data() {
         return {
             activeName: 'follow',
             tabRoute: {
-                'follow': '/follow',
-                'fan': '/fan',
-                'status': '/status',
+                'follow': '/accountvalue/follow',
+                'fan': '/accountvalue/fan',
+                'status': '/accountvalue/status',
             }
         }
     },
     created() {
-        this.$router.push({path: 'follow'});
+        this.$router.replace({
+            path: '/accountvalue/follow',
+            query: {
+                    AccountMid: this.accountMid,
+                }
+            });
     },
     methods: {
         handleClick(v) {
-            this.$router.push({path: this.tabRoute[v.name]});
+            this.$router.push({
+                path: this.tabRoute[v.name],
+                query: {
+                        AccountMid: this.accountMid,
+                    }
+                });
         }
     }
 }

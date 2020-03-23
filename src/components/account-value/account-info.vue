@@ -44,14 +44,23 @@
 import { getMasterBaseInfo } from '../../api/account-value/index';
 
 export default {
+    props: {
+        accountMid: {
+            type: Number,
+        },
+    },
     data() {
         return {
             baseInfo: {},
         }
     },
     created() {
-        getMasterBaseInfo({'master_name': '乐拉啊啊啊'}).then(res => {
-            this.baseInfo = res;
+        getMasterBaseInfo({'master_id': this.accountMid}).then(res => {
+            if (res.Code === 1) {
+                this.baseInfo = res.Data;
+            } else {
+                this.$bus.$emit('setAccountValueLoading');
+            }
         })
     }
 }

@@ -46,33 +46,43 @@ export default {
             followRankData: [],
             followFollowCountData: [],
             followFollowerCountData: [],
-            followStatusCountData: []
+            followStatusCountData: [],
         }
     },
     created() {
-        getFollowGender({'master_name': '乐拉啊啊啊'}).then(
+        getFollowGender({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.followGenderData = res;
+                if (res.Code === 1) {
+                    this.followGenderData = res.Data;
+                }
             }
         ),
-        getFollowRank({'master_name': '乐拉啊啊啊'}).then(
+        getFollowRank({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.followRankData = res;
+                if (res.Code === 1) {
+                    this.followRankData = res.Data;
+                }
             }
         ),
-        getFollowFollowCount({'master_name': '乐拉啊啊啊'}).then(
+        getFollowFollowCount({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.followFollowCountData = res;
+                if (res.Code === 1) {
+                    this.followFollowCountData = res.Data;
+                }
             }
         ),
-        getFollowFollowerCount({'master_name': '乐拉啊啊啊'}).then(
+        getFollowFollowerCount({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.followFollowerCountData = res;
+                if (res.Code === 1) {
+                    this.followFollowerCountData = res.Data;
+                }
             }
         ),
-        getFollowStatusCount({'master_name': '乐拉啊啊啊'}).then(
+        getFollowStatusCount({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.followStatusCountData = res;
+                if (res.Code === 1) {
+                    this.followStatusCountData = res.Data;
+                }
             }
         )
     },

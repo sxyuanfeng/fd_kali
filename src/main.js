@@ -6,7 +6,12 @@ import router from './router/index';
 
 Vue.use(ElementUI);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+//设置BUS
+const Bus = new Vue();
+
+Vue.prototype.$bus = Bus;
 
 new Vue({
   router,

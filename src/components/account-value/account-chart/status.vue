@@ -31,29 +31,33 @@ export default {
         }
     },
     created() {
-        getMasterStatusesTimeline({'master_name': '乐拉啊啊啊'}).then(
+        getMasterStatusesTimeline({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                let data = res.map(item => format(new Date(item), 'yyyy-MM-dd'));
-                let dataSet = new Set(data);
-                let newData = [];
-                for (let i of dataSet) {
-                    let value = 0;
-                    for (let j of data) {
-                        if (i === j) {
-                            value += 1
+                if (res.Code === 1) {
+                    let data = res.Data.map(item => format(new Date(item), 'yyyy-MM-dd'));
+                    let dataSet = new Set(data);
+                    let newData = [];
+                    for (let i of dataSet) {
+                        let value = 0;
+                        for (let j of data) {
+                            if (i === j) {
+                                value += 1
+                            }
                         }
+                        newData.push({'time': i, 'value': value});
                     }
-                    newData.push({'time': i, 'value': value});
+                    this.masterStatusesTimeline = newData;
                 }
-                this.masterStatusesTimeline = newData;
             }
         ),
-        getMasterStatusesIndex({'master_name': '乐拉啊啊啊'}).then(
+        getMasterStatusesIndex({'master_id': this.$route.query.AccountMid}).then(
             res => {
-                this.masterStatusesIndex = res.map(item => {
-                    return {'time': item.time.split(' ')[1] + ' ' + item.time.split(' ')[2] + ' ' + item.time.split(' ')[5]
-                    + ' ' + item.time.split(' ')[3], '点赞': item.attitudes, '评论': item.comments, '转发': item.reposts}
-                }) 
+                if (res.Code === 1) {
+                    this.masterStatusesIndex = res.Data.map(item => {
+                        return {'time': item.time.split(' ')[1] + ' ' + item.time.split(' ')[2] + ' ' + item.time.split(' ')[5]
+                        + ' ' + item.time.split(' ')[3], '点赞': item.attitudes, '评论': item.comments, '转发': item.reposts}
+                    })
+                }
             }
         )
     },

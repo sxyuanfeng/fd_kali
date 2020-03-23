@@ -2,7 +2,7 @@
     <div class="page-sidebar-wrapper">
         <ul>
             <li class="sidebar-button">
-                <span @click="$router.push({path: '/follow'})" class="sidebar-name">账号价值分析</span>
+                <span @click="$router.push({path: '/'})" class="sidebar-name">账号价值分析</span>
             </li>
             <li class="sidebar-button">
                 <span @click="$router.push({path: '/hottag'})" class="sidebar-name">热搜词云</span>
