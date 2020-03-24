@@ -8,7 +8,7 @@
                 <span @click="$router.push({path: '/hottag'})" class="sidebar-name">热搜词云</span>
             </li>
             <li class="sidebar-button">
-                <span @click="$router.push({path: '/repost'})" class="sidebar-name">微博转发关系图</span>
+                <span @click="$router.push({path: '/repostsearch'})" class="sidebar-name">微博转发关系图</span>
             </li>
         </ul>
     </div>

@@ -35,6 +35,9 @@
                         <span class="exponent-value">{{ baseInfo.master_statuses_count }}</span>
                     </div>
                 </div>
+                <div style="margin-top: 30px; ">
+                    <span style="font-size: 14px; color:darkgray;">更新时间：{{ baseInfo.current_time.split('.')[0] }}</span>
+                </div>
             </el-card>
         </el-col>
     </div>

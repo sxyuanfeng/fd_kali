@@ -4,6 +4,7 @@ import AccountValue from '../pages/account-value';
 import AccountValueSearch from '../pages/search/account-value-search';
 import HotTag from '../pages/hot-tag';
 import Repost from '../pages/repost';
+import RepostSearch from '../pages/search/repost-search';
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,12 @@ const routes = [
     {
         path: '/hottag',
         component: HotTag,
+        children: [
+        ]
+    },
+    {
+        path: '/repostsearch',
+        component: RepostSearch,
         children: [
         ]
     },

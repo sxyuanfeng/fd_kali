@@ -1,17 +1,16 @@
 <template>
-    <div repost-chart-wrapper>
+    <div class="repost-chart-wrapper">
         <el-col :span="24">
             <el-card shadow="hover" class="account-chart-card">
-                <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-scrollbar style="height: 100%">
-                        <div class="chart-wrapper">
-                            <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                                <el-breadcrumb-item style="font-size: 20px;">词云图</el-breadcrumb-item>
-                            </el-breadcrumb>
-                            <iframe ref="repostchart" frameborder="0" width="1000px" height="600px" srcdoc="<p>词云图</p>"></iframe>
-                        </div>
-                    </el-scrollbar>
-                </el-tabs>
+                <el-scrollbar style="height: 100%">
+                    <div class="chart-wrapper">
+                        <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                            <el-breadcrumb-item style="font-size: 20px;">微博转发关系图</el-breadcrumb-item>
+                        </el-breadcrumb>
+                        <repost-card :blogMid="blogMid"></repost-card>
+                        <iframe ref="repostchart" frameborder="0" width="1000px" height="600px" srcdoc="<p>微博转发关系图</p>"></iframe>
+                    </div>
+                </el-scrollbar>
             </el-card>
         </el-col>
     </div>
@@ -19,12 +18,26 @@
 
 <script>
 import { getRepostChart } from '../../api/repost/index';
+import RepostCard from './repost-card';
 
 export default {
+    components: {
+        RepostCard,
+    },
+    props: {
+        blogMid: {
+            type: Number,
+        }
+    },
     created() {
-        getRepostChart().then(
+        getRepostChart({'mid': this.blogMid}).then(
             res => {
-                this.$refs.repostchart.srcdoc = res;
+                if (res.Code ===1) {
+                    this.$refs.repostchart.srcdoc = res.Data;
+                } else {
+                    this.$bus.$emit('setRepostLoading');
+                }
+                
             }
         );
     }

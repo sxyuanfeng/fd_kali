@@ -12,3 +12,15 @@ export function getRepostChart(params) {
         })
     })
 }
+
+export function getRepostCard(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.repostcard, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
