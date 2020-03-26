@@ -1,16 +1,19 @@
 <template>
     <div class="page-sidebar-wrapper">
-        <ul>
-            <li class="sidebar-button">
-                <span @click="$router.push({path: '/'})" class="sidebar-name">账号价值分析</span>
-            </li>
-            <li class="sidebar-button">
-                <span @click="$router.push({path: '/hottag'})" class="sidebar-name">热搜词云</span>
-            </li>
-            <li class="sidebar-button">
-                <span @click="$router.push({path: '/repostsearch'})" class="sidebar-name">微博转发关系图</span>
-            </li>
-        </ul>
+        <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+            <el-menu-item index="1">
+                <i class="el-icon-user"></i>
+                <span slot="title" @click="$router.push({path: '/'})">账号分析</span>
+            </el-menu-item>
+            <el-menu-item index="2">
+                <i class="el-icon-document"></i>
+                <span slot="title" @click="$router.push({path: '/hottag'})">热搜词云</span>
+            </el-menu-item>
+            <el-menu-item index="3">
+                <i class="el-icon-setting"></i>
+                <span slot="title" @click="$router.push({path: '/repostsearch'})">微博转发关系图</span>
+            </el-menu-item>
+        </el-menu>
     </div>
 </template>
 
@@ -20,12 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.sidebar-button {
-    margin: 40px;
-    cursor: pointer;
-}
-
-.sidebar-name {
-    color: #566573;
+.page-sidebar-wrapper {
+    margin-top: 10px;
 }
 </style>

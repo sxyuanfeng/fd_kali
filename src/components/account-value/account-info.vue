@@ -1,6 +1,6 @@
 <template>
     <div class="account-info-wrapper">
-        <el-col :span="8">
+        <el-col :span="7">
             <el-card shadow="hover" class="account-info-card">
                 <div class="base-info">
                     <div style="display: flex">
@@ -10,7 +10,7 @@
                                 <span style="font-weight: 600">{{ baseInfo.master_name }}</span>
                             </a>&nbsp;
                             <i v-if="baseInfo.master_gender === 'm'" class="el-icon-male" style="color: #409EFF; font-weight: 600;"></i>
-                            <i v-else class="el-icon-female" style="color: #EC7063; font-weight: 600; transform:rotate(45deg);"></i>
+                            <i v-else class="el-icon-female" style="color: #ff6ea5; font-weight: 600; transform:rotate(45deg);"></i>
                             <div class="base-info-rank">
                                 <el-tag type="warning" size="mini">
                                     <i class="el-icon-medal" style="font-weight: 600"></i>{{ baseInfo.master_urank }}

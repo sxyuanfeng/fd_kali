@@ -3,13 +3,17 @@
         <el-scrollbar style="height: 100%">
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">最近微博发布时间</el-breadcrumb-item>
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">最近微博发布时间</font>
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="master-statuses-timeline"></div>
             </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">微博指标</el-breadcrumb-item>
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">微博指标</font>
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="master-statuses-index"></div>
             </div>
@@ -179,15 +183,32 @@ export default {
 .vertical-bar::before{
     content: "";
     width: 5px;
-    height: 30px;
+    height: 16px;
     position: absolute;
-    top: -5px;
+    top: 0px;
     left: -15px;
-    background:#F8C471;
+    background:#ff873f;
+}
+
+.breadcrumb-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #303133;
 }
 
 .chart-wrapper {
     margin: 20px 30px;
     position: relative;
 }
+
+.panel-box {
+    box-sizing: border-box;
+    border: 1px solid #e6ebf0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    margin-top: 10px;
+    position: relative;
+    right: 15px;
+}
+
 </style>

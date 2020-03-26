@@ -1,33 +1,59 @@
 <template>
     <div class="follow-wrapper">
         <el-scrollbar style="height: 100%">
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <div class="chart-wrapper">
+                        <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                            <el-breadcrumb-item>
+                                <font class="breadcrumb-name">性别分布</font>
+                            </el-breadcrumb-item>
+                        </el-breadcrumb>
+                        <div class="panel-box flex">
+                            <dl class="gender-item">
+                                <dt>
+                                    <i class="iconfont icon-nan" style="color: #409eff; font-size: 64px"></i>
+                                </dt>
+                                <div class="gender-item-wrapper">
+                                    <font class="gender-item-title">男性</font>
+                                    <font class="gender-item-value">{{ followGenderData.man }}%</font>
+                                </div>
+                            </dl>
+                            <dl class="gender-item">
+                                <dt>
+                                    <i class="iconfont icon-nv" style="color: #ff6ea5; font-size: 64px"></i>
+                                </dt>
+                                <div class="gender-item-wrapper">
+                                    <font class="gender-item-title">女性</font>
+                                    <font class="gender-item-value">{{ followGenderData.woman }}%</font>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+            
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">男女比例</el-breadcrumb-item>
-                </el-breadcrumb>
-                <div id="follow-gender"></div>
-            </div>
-            <div class="chart-wrapper">
-                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">等级分布</el-breadcrumb-item>
-                </el-breadcrumb>
-                <div id="follow-rank"></div>
-            </div>
-            <div class="chart-wrapper">
-                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">关注的关注数分布</el-breadcrumb-item>
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">关注的关注数分布</font>
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="follow-follow-count"></div>
             </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">关注的粉丝数分布</el-breadcrumb-item>
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">关注的粉丝数分布</font>
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="follow-follower-count"></div>
             </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item style="font-size: 20px;">关注的微博数分布</el-breadcrumb-item>
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">关注的微博数分布</font>
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
                 <div id="follow-status-count"></div>
             </div>
@@ -42,7 +68,7 @@ import { getFollowGender, getFollowRank, getFollowFollowCount, getFollowFollower
 export default {
     data() {
         return {
-            followGenderData: [],
+            followGenderData: {},
             followRankData: [],
             followFollowCountData: [],
             followFollowerCountData: [],
@@ -87,9 +113,6 @@ export default {
         )
     },
     watch: {
-        'followGenderData': function() {
-            this.paintGenderChart()
-        },
         'followRankData': function() {
             this.paintRankChart();
         },
@@ -108,6 +131,7 @@ export default {
         handleClick(tab, event) {
             console.log(tab, event);
         },*/
+        /** 
         paintGenderChart() {
             let chart = new G2.Chart({
                 container: 'follow-gender',
@@ -151,7 +175,7 @@ export default {
             });
             chart.render();
             interval.setSelected(this.followGenderData[0]);
-        },
+        },*/
         paintRankChart() {
             let chart = new G2.Chart({
                 container: 'follow-rank',
@@ -317,16 +341,64 @@ export default {
 .vertical-bar::before{
     content: "";
     width: 5px;
-    height: 30px;
+    height: 16px;
     position: absolute;
-    top: -5px;
+    top: 0px;
     left: -15px;
-    background:#F8C471;
+    background:#ff873f;
+}
+
+.breadcrumb-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #303133;
 }
 
 .chart-wrapper {
     margin: 20px 30px;
     position: relative;
+}
+
+.panel-box {
+    box-sizing: border-box;
+    border: 1px solid #e6ebf0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    margin-top: 10px;
+    position: relative;
+    right: 15px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.gender-item {
+    padding: 35px 0;
+    width: 150px;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.gender-item-wrapper {
+    display: flex; 
+    flex-direction: column;
+}
+
+.gender-item-title {
+    color: #606266;
+    font-size: 14px;
+    margin: 8px 0 5px 10px;
+    text-align: left;
+    
+}
+
+.gender-item-value {
+    color: #303133;
+    font-size: 20px;
+    margin: 5px 0 5px 10px;
 }
 
 </style>

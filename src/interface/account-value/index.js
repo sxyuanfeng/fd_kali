@@ -1,6 +1,7 @@
 export default {
     masterBaseInfo: '/api/masterbaseinfo',
     fanGender: '/api/fangender/',
+    aliveFans: '/api/alivefans',
     followGender: '/api/followgender',
     followRank: '/api/followrank',
     fanRank: '/api/fanrank',

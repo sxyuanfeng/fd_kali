@@ -1,0 +1,23 @@
+{
+  "id": "1715517",
+  "name": "gd",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5093332",
+      "name": "男",
+      "font_class": "nan",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "5093335",
+      "name": "女",
+      "font_class": "nv",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    }
+  ]
+}

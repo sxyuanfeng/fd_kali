@@ -25,6 +25,18 @@ export function getFanGender(params) {
     })
 }
 
+export function getAliveFans(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.aliveFans, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data);    
+        })
+    })
+}
+
 export function getFollowGender(params) {
     return new Promise((resolve, reject) => {
         Axios.get(InterFace.followGender, {
