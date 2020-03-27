@@ -31,6 +31,18 @@
                         </div>
                     </div>
                 </el-col>
+                <el-col :span="12">
+                    <div class="chart-wrapper">
+                        <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                            <el-breadcrumb-item>
+                                <font class="breadcrumb-name">加V比例</font>
+                            </el-breadcrumb-item>
+                        </el-breadcrumb>
+                        <div class="panel-box">
+                            <div id="fans-addV"></div>            
+                        </div>
+                    </div>
+                </el-col>
             </el-row>
             <el-row :gutter="10">
                 <el-col :span="12">
@@ -53,7 +65,7 @@
                             </el-breadcrumb-item>
                         </el-breadcrumb>
                         <div class="panel-box">
-                            <div id="true-fans"></div>                   
+                            <div id="true-fans"></div>            
                         </div>
                     </div>
                 </el-col>
@@ -61,34 +73,22 @@
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
                     <el-breadcrumb-item>
-                        <font class="breadcrumb-name">等级分布</font>
+                        <font class="breadcrumb-name">粉丝量级分布</font>
                     </el-breadcrumb-item>
                 </el-breadcrumb>
-                <div id="fan-rank"></div>
+                <div class="panel-box">
+                    <div id="fan-measure"></div>
+                </div>
             </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
                     <el-breadcrumb-item>
-                        <font class="breadcrumb-name">粉丝的关注数分布</font>
+                        <font class="breadcrumb-name">人群标签</font>
                     </el-breadcrumb-item>
                 </el-breadcrumb>
-                <div id="fan-follow-count"></div>
-            </div>
-            <div class="chart-wrapper">
-                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item>
-                        <font class="breadcrumb-name">粉丝的粉丝数分布</font>
-                    </el-breadcrumb-item>
-                </el-breadcrumb>
-                <div id="fan-follower-count"></div>
-            </div>
-            <div class="chart-wrapper">
-                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item>
-                        <font class="breadcrumb-name">粉丝的微博数分布</font>
-                    </el-breadcrumb-item>
-                </el-breadcrumb>
-                <div id="fan-status-count"></div>
+                <div class="panel-box">
+                    <div id="fan-verified-type"></div>
+                </div>
             </div>
         </el-scrollbar>
 
@@ -97,17 +97,18 @@
 
 <script>
 import G2 from '@antv/g2';
-import { getFanGender, getAliveFans, getFanRank, getFanFollowCount, getFanFollowerCount, getFanStatusCount } from '../../../api/account-value/index';
+import DataSet from '@antv/data-set';
+import { getFanGender, getFanAddV, getAliveFans, getTrueFans, getFanMeasure, getFanVerifiedType } from '../../../api/account-value/index';
 
 export default {
     data() {
         return {
             fanGenderData: {},
+            fanAddVData: [],
             aliveFansData: [],
-            fanRankData: [],
-            fanFollowCountData: [],
-            fanFollowerCountData: [],
-            fanStatusCountData: []
+            trueFansData: [],
+            fanMeasureData: [],
+            fanVerifiedTypeData: [],
         }
     },
     created() {
@@ -118,57 +119,57 @@ export default {
                 }
             }
         ),
+        getFanAddV({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    this.fanAddVData = res.Data;
+                }
+            }
+        )
         getAliveFans({'master_id': this.$route.query.AccountMid}).then(
             res => {
                 if (res.Code === 1) {
                     this.aliveFansData = res.Data;
                 }
             }
-        )
-        getFanRank({'master_id': this.$route.query.AccountMid}).then(
+        ),
+        getTrueFans({'master_id': this.$route.query.AccountMid}).then(
             res => {
                 if (res.Code === 1) {
-                    this.fanRankData = res.Data;
+                    this.trueFansData = res.Data;
                 }
             }
         ),
-        getFanFollowCount({'master_id': this.$route.query.AccountMid}).then(
+        getFanMeasure({'master_id': this.$route.query.AccountMid}).then(
             res => {
                 if (res.Code === 1) {
-                    this.fanFollowCountData = res.Data;
+                    this.fanMeasureData = res.Data;
                 }
             }
         ),
-        getFanFollowerCount({'master_id': this.$route.query.AccountMid}).then(
+        getFanVerifiedType({'master_id': this.$route.query.AccountMid}).then(
             res => {
                 if (res.Code === 1) {
-                    this.fanFollowerCountData = res.Data;
-                }
-            }
-        ),
-        getFanStatusCount({'master_id': this.$route.query.AccountMid}).then(
-            res => {
-                if (res.Code === 1) {
-                    this.fanStatusCountData = res.Data;
+                    this.fanVerifiedTypeData = res.Data;
                 }
             }
         )
     },
     watch: {
+        'fanAddVData': function() {
+            this.paintFanAddV();
+        },
         'aliveFansData': function() {
             this.paintAliveFans();
         },
-        'fanRankData': function() {
-            this.paintRankChart();
+        'trueFansData': function() {
+            this.paintTrueFans();
         },
-        'fanFollowCountData': function() {
-            this.paintFollowCount();
+        'fanMeasureData': function() {
+            this.paintFanMeasure();
         },
-        'fanFollowerCountData': function() {
-            this.paintFollowerCount();
-        },
-        'fanStatusCountData': function() {
-            this.paintStatusCount();
+        'fanVerifiedTypeData': function() {
+            this.paintFanVerifiedType();
         }
     },
     methods: {
@@ -177,52 +178,64 @@ export default {
             console.log(tab, event);
         },
         */
-        /** 
-        paintGenderChart() {
-            let chart = new G2.Chart({
-                container: 'fan-gender',
-                forceFit: true,
-                height: 400,
-                padding: [ 50, 20, 50, 20 ]
-            });
-            chart.source(this.fanGenderData, {
-                percent: {
-                    formatter: val => {
-                        val = (val * 100) + '%';
-                        return val;
-                    }
+        paintFanAddV() {
+            // 可以通过调整这个数值控制分割空白处的间距，0-1 之间的数值
+            const sliceNumber = 0.01;
+
+            // 自定义 other 的图形，增加两条线
+            G2.Shape.registerShape('interval', 'sliceShape', {
+                draw(cfg, container) {
+                    const points = cfg.points;
+                    let path = [];
+                    path.push([ 'M', points[0].x, points[0].y ]);
+                    path.push([ 'L', points[1].x, points[1].y - sliceNumber ]);
+                    path.push([ 'L', points[2].x, points[2].y - sliceNumber ]);
+                    path.push([ 'L', points[3].x, points[3].y ]);
+                    path.push('Z');
+                    path = this.parsePath(path);
+                    return container.addShape('path', {
+                        attrs: {
+                            fill: cfg.color,
+                            path
+                        }
+                    });
                 }
             });
+
+            let chart = new G2.Chart({
+                container: 'fans-addV',
+                forceFit: true,
+                height: 150,
+                padding: [ 20, 20, 20, 20 ]
+            });
+
+            chart.source(this.fanAddVData, {
+                        value: {
+                            formatter: val => {
+                                val = val + '%';
+                            return val;
+                        }
+                    }
+                });
+            chart.legend(false);
+            chart.guide().html({
+                position: [ '50%', '50%' ],
+                html: `<div style="color:#F4D03F;font-size: 14px;text-align: center;width: 10em;">${this.fanAddVData[1].type}<br><span style="color:#F4D03F;font-size:16px">${this.fanAddVData[1].value}</span>%</div>`,
+                alignX: 'middle',
+                alignY: 'middle'
+            });
             chart.coord('theta', {
-                radius: 0.75,
-                innerRadius: 0.6
+                innerRadius: 0.75
             });
             chart.tooltip({
-                showTitle: false,
-                itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+                showTitle: false
             });
-            const interval = chart.intervalStack()
-                .position('percent')
-                .color('item')
-                .label('percent', {
-                    formatter: (val, item) => {
-                        return item.point.item + ': ' + val;
-                    }
-            })
-            .tooltip('item*percent', (item, percent) => {
-                percent = percent * 100 + '%';
-                return {
-                    name: item,
-                    value: percent
-                };
-            })
-            .style({
-                lineWidth: 1,
-                stroke: '#fff'
-            });
+            chart.intervalStack()
+                .position('value')
+                .color('type', ['#eceef1', '#F4D03F'])
+                .shape('sliceShape');
             chart.render();
-            interval.setSelected(this.fanGenderData[0]);
-        },*/
+        },
         paintAliveFans() {
             // 可以通过调整这个数值控制分割空白处的间距，0-1 之间的数值
             const sliceNumber = 0.01;
@@ -280,160 +293,153 @@ export default {
                 .color('type', ['#eceef1', '#ff873f'])
                 .shape('sliceShape');
             chart.render();
-
         },
-        paintRankChart() {
-            let chart = new G2.Chart({
-                container: 'fan-rank',
-                forceFit: true,
-                height: 500,
-                padding: [ 50, 20, 50, 20 ]
-            });
-            chart.source(this.fanRankData);
-            chart.scale('value', {
-                alias: '人数'
-            });
-            chart.axis('type', {
-                label: {
-                    textStyle: {
-                        fill: '#aaaaaa'
-                    }
-                },
-                tickLine: {
-                    alignWithLabel: false,
-                    length: 0
+        paintTrueFans() {
+            // 可以通过调整这个数值控制分割空白处的间距，0-1 之间的数值
+            const sliceNumber = 0.01;
+
+            // 自定义 other 的图形，增加两条线
+            G2.Shape.registerShape('interval', 'sliceShape', {
+                draw(cfg, container) {
+                    const points = cfg.points;
+                    let path = [];
+                    path.push([ 'M', points[0].x, points[0].y ]);
+                    path.push([ 'L', points[1].x, points[1].y - sliceNumber ]);
+                    path.push([ 'L', points[2].x, points[2].y - sliceNumber ]);
+                    path.push([ 'L', points[3].x, points[3].y ]);
+                    path.push('Z');
+                    path = this.parsePath(path);
+                    return container.addShape('path', {
+                        attrs: {
+                            fill: cfg.color,
+                            path
+                        }
+                    });
                 }
             });
-            chart.axis('value', false);
-            chart.tooltip({
-                share: true
+
+            let chart = new G2.Chart({
+                container: 'true-fans',
+                forceFit: true,
+                height: 150,
+                padding: [ 20, 20, 20, 20 ]
             });
 
-            chart.interval().position('type*value').opacity(1)
-                .label('value', {
-                    useHtml: true,
-                    htmlTemplate: (text, item) => {
-                        const a = item.point;
-                        a.percent = String(parseInt(a.percent * 100)) + '%';
-                        return '<span class="g2-label-item"><p class="g2-label-item-value">' + a.value + '</p><p class="g2-label-item-percent">' + a.percent + '</p></div>';
+            chart.source(this.trueFansData, {
+                        value: {
+                            formatter: val => {
+                                val = val + '%';
+                            return val;
+                        }
                     }
                 });
+            chart.legend(false);
+            chart.guide().html({
+                position: [ '50%', '50%' ],
+                html: `<div style="color:#E74C3C;font-size: 14px;text-align: center;width: 10em;">${this.trueFansData[1].type}<br><span style="color:#E74C3C;font-size:16px">${this.trueFansData[1].value}</span>%</div>`,
+                alignX: 'middle',
+                alignY: 'middle'
+            });
+            chart.coord('theta', {
+                innerRadius: 0.75
+            });
+            chart.tooltip({
+                showTitle: false
+            });
+            chart.intervalStack()
+                .position('value')
+                .color('type', ['#eceef1', '#E74C3C'])
+                .shape('sliceShape');
             chart.render();
         },
-        paintFollowCount() {
+        paintFanMeasure() {
             let chart = new G2.Chart({
-                container: 'fan-follow-count',
+                container: 'fan-measure',
                 forceFit: true,
-                height: 500,
-                padding: [ 50, 20, 50, 20 ]
+                height: 400,
+                padding: [ 20, 20, 20, 80 ]
             });
-            chart.source(this.fanFollowCountData);
-            chart.scale('value', {
-                alias: '人数'
-            });
-            chart.axis('type', {
-                label: {
-                    textStyle: {
-                        fill: '#aaaaaa'
-                    }
-                },
-                tickLine: {
-                    alignWithLabel: false,
-                    length: 0
-                }
-            });
-            chart.axis('value', false);
-            chart.tooltip({
-                share: true
-            });
-
-            chart.interval().position('type*value').opacity(1)
-                .label('value', {
-                    useHtml: true,
-                    htmlTemplate: (text, item) => {
-                        const a = item.point;
-                        a.percent = String(parseInt(a.percent * 100)) + '%';
-                        return '<span class="g2-label-item"><p class="g2-label-item-value">' + a.value + '</p><p class="g2-label-item-percent">' + a.percent + '</p></div>';
+            chart.source(this.fanMeasureData, {
+                        percent: {
+                            formatter: val => {
+                                val = val + '%';
+                            return val;
+                        }
                     }
                 });
+            chart.axis('amount', {
+                label: {
+                    offset: 12
+                }
+            });
+            chart.coord().transpose();
+            chart.interval().position('amount*percent').color('amount', [ '#ff873f' ]);
             chart.render();
         },
-        paintFollowerCount() {
+        paintFanVerifiedType() {
             let chart = new G2.Chart({
-                container: 'fan-follower-count',
+                container: 'fan-verified-type',
                 forceFit: true,
-                height: 500,
-                padding: [ 50, 20, 50, 20 ]
+                height: 400,
+                padding: [ 10, 20, 10, 20 ]
             });
-            chart.source(this.fanFollowerCountData);
-            chart.scale('value', {
-                alias: '人数'
+            const dv = new DataSet.View().source(this.fanVerifiedTypeData);
+            dv.transform({
+                type: 'fold',
+                fields: [ 'percent' ], // 展开字段集
+                key: 'label', // key字段
+                value: 'score' // value字段
             });
-            chart.axis('type', {
-                label: {
-                    textStyle: {
-                        fill: '#aaaaaa'
-                    }
-                },
-                tickLine: {
-                    alignWithLabel: false,
-                    length: 0
-                }
-            });
-            chart.axis('value', false);
-            chart.tooltip({
-                share: true
-            });
-
-            chart.interval().position('type*value').opacity(1)
-                .label('value', {
-                    useHtml: true,
-                    htmlTemplate: (text, item) => {
-                        const a = item.point;
-                        a.percent = String(parseInt(a.percent * 100)) + '%';
-                        return '<span class="g2-label-item"><p class="g2-label-item-value">' + a.value + '</p><p class="g2-label-item-percent">' + a.percent + '</p></div>';
+            chart.source(dv, {
+                        score: {
+                            formatter: val => {
+                                val = val + '%';
+                            return val;
+                        }
                     }
                 });
+            chart.legend(false);
+            chart.coord('polar', {
+                radius: 0.8
+            });
+            chart.axis('item', {
+                line: null,
+                tickLine: null,
+                grid: {
+                    lineStyle: {
+                        lineDash: null
+                    },
+                    hideFirstLine: false
+                }
+            });
+            chart.axis('score', {
+                line: null,
+                tickLine: null,
+                grid: {
+                    type: 'polygon',
+                    lineStyle: {
+                        lineDash: null
+                    },
+                    alternateColor: 'rgba(0, 0, 0, 0.04)'
+                }
+            });
+            chart.legend('label', {
+                marker: 'circle',
+                offset: 30
+            });
+            chart.line().position('item*score').color('label')
+                .size(2);
+            chart.point().position('item*score').color('label')
+                .shape('circle')
+                .size(4)
+                .style({
+                    stroke: '#fff',
+                    lineWidth: 1,
+                    fillOpacity: 1
+                });
+            chart.area().position('item*score').color('label');
             chart.render();
         },
-        paintStatusCount() {
-            let chart = new G2.Chart({
-                container: 'fan-status-count',
-                forceFit: true,
-                height: 500,
-                padding: [ 50, 20, 50, 20 ]
-            });
-            chart.source(this.fanStatusCountData);
-            chart.scale('value', {
-                alias: '人数'
-            });
-            chart.axis('type', {
-                label: {
-                    textStyle: {
-                        fill: '#aaaaaa'
-                    }
-                },
-                tickLine: {
-                    alignWithLabel: false,
-                    length: 0
-                }
-            });
-            chart.axis('value', false);
-            chart.tooltip({
-                share: true
-            });
-
-            chart.interval().position('type*value').opacity(1)
-                .label('value', {
-                    useHtml: true,
-                    htmlTemplate: (text, item) => {
-                        const a = item.point;
-                        a.percent = String(parseInt(a.percent * 100)) + '%';
-                        return '<span class="g2-label-item"><p class="g2-label-item-value">' + a.value + '</p><p class="g2-label-item-percent">' + a.percent + '</p></div>';
-                    }
-                });
-            chart.render();
-        }
     }
 }
 </script>

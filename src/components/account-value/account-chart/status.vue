@@ -4,34 +4,64 @@
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
                     <el-breadcrumb-item>
-                        <font class="breadcrumb-name">最近微博发布时间</font>
+                        <font class="breadcrumb-name">发博数据分析</font>
                     </el-breadcrumb-item>
                 </el-breadcrumb>
-                <div id="master-statuses-timeline"></div>
-            </div>
-            <div class="chart-wrapper">
-                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item>
-                        <font class="breadcrumb-name">微博指标</font>
-                    </el-breadcrumb-item>
-                </el-breadcrumb>
-                <div id="master-statuses-index"></div>
+                <div class="panel-box">
+                    <div class="flex">
+                        <div class="item">
+                            <div class="name">发博天数</div>
+                            <div>1</div>
+                        </div>
+                        <div class="item">
+                            <div class="name">平均点赞</div>
+                            <div>1</div>
+                        </div>
+                        <div class="item">
+                            <div class="name">平均评论</div>
+                            <div>1</div>
+                        </div>
+                        <div class="item">
+                            <div class="name">平均转发</div>
+                            <div>1</div>
+                        </div>
+                    </div>
+                    <div class="panel-box-inner">
+                        <div id="statuses-timeline"></div>
+                    </div>
+                    <div class="tab-wrapper">
+                        <el-tabs v-model="activeName">
+                            <el-tab-pane label="TOP3点赞数" name="attitude">
+                                <mblog-show></mblog-show>
+                            </el-tab-pane>
+                            <el-tab-pane label="TOP3评论数" name="comment">
+                                <mblog-show></mblog-show>
+                            </el-tab-pane>
+                            <el-tab-pane label="TOP3转发数" name="repost">
+                                <mblog-show></mblog-show>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </div>
             </div>
         </el-scrollbar>
     </div>
 </template>
 
 <script>
-import { getMasterStatusesTimeline, getMasterStatusesIndex } from '../../../api/account-value/index';
+import { getMasterStatusesTimeline } from '../../../api/account-value/index';
 import { format } from 'date-fns'
 import G2 from '@antv/g2';
-import DataSet from '@antv/data-set';
+import MblogShow from '../../mblog-show';
 
 export default {
+    components: {
+        MblogShow,
+    },
     data() {
         return {
-            masterStatusesTimeline: [],
-            masterStatusesIndex: [],
+            statusesTimeline: [],
+            activeName: 'attitude',
         }
     },
     created() {
@@ -50,42 +80,29 @@ export default {
                         }
                         newData.push({'time': i, 'value': value});
                     }
-                    this.masterStatusesTimeline = newData;
-                }
-            }
-        ),
-        getMasterStatusesIndex({'master_id': this.$route.query.AccountMid}).then(
-            res => {
-                if (res.Code === 1) {
-                    this.masterStatusesIndex = res.Data.map(item => {
-                        return {'time': item.time.split(' ')[1] + ' ' + item.time.split(' ')[2] + ' ' + item.time.split(' ')[5]
-                        + ' ' + item.time.split(' ')[3], '点赞': item.attitudes, '评论': item.comments, '转发': item.reposts}
-                    })
+                    this.statusesTimeline = newData;
                 }
             }
         )
     },
     watch: {
-        'masterStatusesTimeline': function() {
+        'statusesTimeline': function() {
             this.paintTimelineChart();
-        },
-        'masterStatusesIndex': function() {
-            this.paintIndexChart();
         }
     },
     methods: {
         paintTimelineChart() {
             let chart = new G2.Chart({
-                container: 'master-statuses-timeline',
+                container: 'statuses-timeline',
                 forceFit: true,
-                height: 500,
-                padding: [ 50, 50, 50, 50 ]
+                height: 300,
+                padding: [ 20, 50, 20, 50 ]
             });
             chart.tooltip({
                 crosshairs: false
             });
             let view1 = chart.view();
-            view1.source(this.masterStatusesTimeline);
+            view1.source(this.statusesTimeline);
             view1.axis('time', {
                 subTickCount: 3,
                 subTickLine: {
@@ -113,61 +130,6 @@ export default {
             });
             view1.line().position('time*value');
 
-            chart.render();
-        },
-        paintIndexChart() {
-            let chart = new G2.Chart({
-                container: 'master-statuses-index',
-                forceFit: true,
-                height: 500,
-                padding: [ 50, 20, 50, 20 ]
-            });
-            const dv = new DataSet.View().source(this.masterStatusesIndex);
-            dv.transform({
-                type: 'fold',
-                fields: [ '点赞', '评论', '转发' ], // 展开字段集
-                key: 'label', // key字段
-                value: 'score' // value字段
-            });
-            chart.source(dv);
-            chart.coord('polar', {
-                radius: 0.8
-            });
-            chart.axis('time', {
-                line: null,
-                tickLine: null,
-                grid: {
-                    lineStyle: {
-                        lineDash: null
-                    },
-                    hideFirstLine: false
-                }
-            });
-            chart.axis('score', {
-                line: null,
-                tickLine: null,
-                grid: {
-                    type: 'polygon',
-                    lineStyle: {
-                        lineDash: null
-                    },
-                    alternateColor: 'rgba(0, 0, 0, 0.04)'
-                }
-            });
-            chart.legend('label', {
-                marker: 'circle',
-                offset: 30
-            });
-            chart.line().position('time*score').color('label')
-                .size(2);
-            chart.point().position('time*score').color('label')
-                .shape('circle')
-                .size(4)
-                .style({
-                    stroke: '#fff',
-                    lineWidth: 1,
-                    fillOpacity: 1
-                });
             chart.render();
         },
     }
@@ -201,6 +163,12 @@ export default {
     position: relative;
 }
 
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .panel-box {
     box-sizing: border-box;
     border: 1px solid #e6ebf0;
@@ -209,6 +177,30 @@ export default {
     margin-top: 10px;
     position: relative;
     right: 15px;
+}
+
+.panel-box-inner {
+    box-sizing: border-box;
+    border: 1px solid #e6ebf0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    margin: 10px 20px 10px 20px;
+}
+
+.tab-wrapper {
+    margin: 20px;
+}
+
+.item {
+    width: 80px;
+    height: 40px;
+    margin: 30px 0 20px 0;
+}
+
+.item .name {
+    font-size: 13px;
+    color:darkgray;
+    margin-bottom: 10px;
 }
 
 </style>

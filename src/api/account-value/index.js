@@ -25,9 +25,57 @@ export function getFanGender(params) {
     })
 }
 
+export function getFanAddV(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.fanAddV, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data);    
+        })
+    })
+}
+
 export function getAliveFans(params) {
     return new Promise((resolve, reject) => {
         Axios.get(InterFace.aliveFans, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data);    
+        })
+    })
+}
+
+export function getTrueFans(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.trueFans, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data);    
+        })
+    })
+}
+
+export function getFanMeasure(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.fanMeasure, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data);    
+        })
+    })
+}
+
+export function getFanVerifiedType(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.fanVerifiedType, {
             params: params
         }).then(res => {
             resolve(res.data);
@@ -49,98 +97,39 @@ export function getFollowGender(params) {
     })
 }
 
-export function getFollowRank(params) {
+export function getFollowAddV(params) {
     return new Promise((resolve, reject) => {
-        Axios.get(InterFace.followRank, {
+        Axios.get(InterFace.followAddV, {
             params: params
         }).then(res => {
             resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
+        }).catch(err =>{
+            reject(err.data);    
         })
     })
 }
 
-export function getFanRank(params) {
+export function getFollowMeasure(params) {
     return new Promise((resolve, reject) => {
-        Axios.get(InterFace.fanRank, {
+        Axios.get(InterFace.followMeasure, {
             params: params
         }).then(res => {
             resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
+        }).catch(err =>{
+            reject(err.data);    
         })
     })
 }
 
-export function getFollowFollowCount(params) {
-    return new Promise((resolve, reject) => {
-        Axios.get(InterFace.followFollowCount, {
-            params: params
-        }).then(res => {
-            resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
-        })
-    })
-}
 
-export function getFollowFollowerCount(params) {
+export function getFollowVerifiedType(params) {
     return new Promise((resolve, reject) => {
-        Axios.get(InterFace.followFollowerCount, {
+        Axios.get(InterFace.followVerifiedType, {
             params: params
         }).then(res => {
             resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
-        })
-    })
-}
-
-export function getFanFollowCount(params) {
-    return new Promise((resolve, reject) => {
-        Axios.get(InterFace.fanFollowCount, {
-            params: params
-        }).then(res => {
-            resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
-        })
-    })
-}
-
-export function getFanFollowerCount(params) {
-    return new Promise((resolve, reject) => {
-        Axios.get(InterFace.fanFollowerCount, {
-            params: params
-        }).then(res => {
-            resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
-        })
-    })
-}
-
-export function getFollowStatusCount(params) {
-    return new Promise((resolve, reject) => {
-        Axios.get(InterFace.followStatusCount, {
-            params: params
-        }).then(res => {
-            resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
-        })
-    })
-}
-
-export function getFanStatusCount(params) {
-    return new Promise((resolve, reject) => {
-        Axios.get(InterFace.fanStatusCount, {
-            params: params
-        }).then(res => {
-            resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
+        }).catch(err =>{
+            reject(err.data);    
         })
     })
 }
@@ -148,18 +137,6 @@ export function getFanStatusCount(params) {
 export function getMasterStatusesTimeline(params) {
     return new Promise((resolve, reject) => {
         Axios.get(InterFace.masterStatusesTimeline, {
-            params: params
-        }).then(res => {
-            resolve(res.data);
-        }).catch(err => {
-            reject(err.data);
-        })
-    })
-}
-
-export function getMasterStatusesIndex(params) {
-    return new Promise((resolve, reject) => {
-        Axios.get(InterFace.masterStatusesIndex, {
             params: params
         }).then(res => {
             resolve(res.data);
