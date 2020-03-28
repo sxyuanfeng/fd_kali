@@ -11,19 +11,19 @@
                     <div class="flex">
                         <div class="item">
                             <div class="name">发博天数</div>
-                            <div>1</div>
+                            <div>{{ statusesDays }}</div>
                         </div>
                         <div class="item">
                             <div class="name">平均点赞</div>
-                            <div>1</div>
+                            <div>{{ attitudeMean }}</div>
                         </div>
                         <div class="item">
                             <div class="name">平均评论</div>
-                            <div>1</div>
+                            <div>{{ commentMean }}</div>
                         </div>
                         <div class="item">
                             <div class="name">平均转发</div>
-                            <div>1</div>
+                            <div>{{ repostMean }}</div>
                         </div>
                     </div>
                     <div class="panel-box-inner">
@@ -32,16 +32,26 @@
                     <div class="tab-wrapper">
                         <el-tabs v-model="activeName">
                             <el-tab-pane label="TOP3点赞数" name="attitude">
-                                <mblog-show></mblog-show>
+                                <mblog-show v-for="(item, index) in top3Attitude" :key="index" :mblogData="item"></mblog-show>
                             </el-tab-pane>
                             <el-tab-pane label="TOP3评论数" name="comment">
-                                <mblog-show></mblog-show>
+                                <mblog-show v-for="(item, index) in top3Comment" :key="index" :mblogData="item"></mblog-show>
                             </el-tab-pane>
                             <el-tab-pane label="TOP3转发数" name="repost">
-                                <mblog-show></mblog-show>
+                                <mblog-show v-for="(item, index) in top3Repost" :key="index" :mblogData="item"></mblog-show>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
+                </div>
+            </div>
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">发博活跃时间</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div id="statuses-active-time"></div>
                 </div>
             </div>
         </el-scrollbar>
@@ -49,9 +59,9 @@
 </template>
 
 <script>
-import { getMasterStatusesTimeline } from '../../../api/account-value/index';
-import { format } from 'date-fns'
-import G2 from '@antv/g2';
+import { getStatusesTimeline, getStatusesActiveTime } from '../../../api/account-value/index';
+import { format, differenceInDays } from 'date-fns'
+import G2 from '@antv/g2'
 import MblogShow from '../../mblog-show';
 
 export default {
@@ -60,78 +70,151 @@ export default {
     },
     data() {
         return {
-            statusesTimeline: [],
+            statusesTimelineData: [],
+            statusesDays: 0,
+            attitudeMean: 0,
+            commentMean: 0,
+            repostMean: 0,
+            top3Attitude: [],
+            top3Comment: [],
+            top3Repost: [],
             activeName: 'attitude',
+            statusesActiveTimeData: [],
         }
     },
     created() {
-        getMasterStatusesTimeline({'master_id': this.$route.query.AccountMid}).then(
+        getStatusesTimeline({'master_id': this.$route.query.AccountMid}).then(
             res => {
                 if (res.Code === 1) {
-                    let data = res.Data.map(item => format(new Date(item), 'yyyy-MM-dd'));
-                    let dataSet = new Set(data);
-                    let newData = [];
-                    for (let i of dataSet) {
-                        let value = 0;
-                        for (let j of data) {
-                            if (i === j) {
-                                value += 1
-                            }
-                        }
-                        newData.push({'time': i, 'value': value});
-                    }
-                    this.statusesTimeline = newData;
+                    let newData = this.formatTime(res.Data['statuses_timeline_list']);
+                    this.statusesTimelineData = newData;
+                    this.statusesDays = differenceInDays(new Date(res.Data['days'][0]), new Date(res.Data['days'][1]));
+                    this.attitudeMean = res.Data['attitude_mean'];
+                    this.commentMean = res.Data['comment_mean'];
+                    this.repostMean = res.Data['repost_mean'];
+                    this.top3Attitude = res.Data['top_3_attitude'];
+                    this.top3Comment = res.Data['top_3_comment'];
+                    this.top3Repost = res.Data['top_3_repost'];
+                }
+            }
+        ),
+        getStatusesActiveTime({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    let newData = this.formatHours(res.Data);
+                    this.statusesActiveTimeData = newData;
                 }
             }
         )
     },
     watch: {
-        'statusesTimeline': function() {
+        'statusesTimelineData': function() {
             this.paintTimelineChart();
+        },
+        'statusesActiveTimeData': function() {
+            this.paintStatusesActiveTime();
         }
     },
     methods: {
+        formatTime(timeStr) {
+            let data = timeStr.map(item => format(new Date(item), 'yyyy-MM-dd'));
+            let dataSet = new Set(data);
+            let newData = [];
+            for (let i of dataSet) {
+                let value = 0;
+                for (let j of data) {
+                    if (i === j) {
+                        value += 1
+                    }
+                }
+                newData.push({'time': i, 'value': value});
+            }
+            return newData;
+        },
+        formatHours(timeStr) {
+            let data = timeStr.map(item => format(new Date(item), 'HH'));
+            let dataSet = new Set(data);
+            let newData = [];
+            for (let i of dataSet) {
+                let value = 0;
+                for (let j of data) {
+                    if (i === j) {
+                        value += 1
+                    }
+                }
+                newData.push({'hour': parseInt(i), 'value': value});
+            }
+            return newData;
+        },
         paintTimelineChart() {
             let chart = new G2.Chart({
                 container: 'statuses-timeline',
                 forceFit: true,
                 height: 300,
-                padding: [ 20, 50, 20, 50 ]
+                padding: [ 20, 20, 30, 40 ]
             });
-            chart.tooltip({
-                crosshairs: false
+            chart.source(this.statusesTimelineData);
+            chart.scale({
+                value: {
+                    min: 0
+                },
+                time: {
+                    range: [ 0, 1 ]
+                }
             });
-            let view1 = chart.view();
-            view1.source(this.statusesTimeline);
-            view1.axis('time', {
-                subTickCount: 3,
-                subTickLine: {
-                    length: 3,
-                    stroke: '#bfbfbf',
-                    lineWidth: 1
-                },
-                tickLine: {
-                    length: 6,
-                    lineWidth: 1,
-                    stroke: '#bfbfbf'
-                },
+            chart.axis('value', {
                 label: {
-                    textStyle: {
-                    fill: '#aaaaaa'
+                    formatter: val => {
+                        return val + '条';
                     }
                 }
             });
-            view1.axis('value', {
-                label: {
-                    textStyle: {
-                    fill: '#aaaaaa'
-                    },
+            chart.tooltip({
+                crosshairs: {
+                    type: 'line'
                 }
             });
-            view1.line().position('time*value');
-
+            chart.area().position('time*value').color('time', [ '#E74C3C' ]).shape('smooth');
+            chart.line().position('time*value').color('time', [ '#E74C3C' ]).size(2).shape('smooth');
             chart.render();
         },
+        paintStatusesActiveTime() {
+            let chart = new G2.Chart({
+                container: 'statuses-active-time',
+                forceFit: true,
+                height: 400,
+                padding: [ 20, 20, 20, 60 ]
+            });
+            chart.source(this.statusesActiveTimeData);
+            chart.scale({
+                value: {
+                    tickInterval: 10,
+                    minLimit: 0,
+                },
+                hour: {
+                    minLimit: 0,
+                    maxLimit: 23,
+                }
+            });
+            chart.axis('value', {
+                label: {
+                    formatter: val => {
+                        return val + '条';
+                    },
+                    offset: 25
+                }
+            });
+            chart.axis('hour', {
+                label: {
+                    formatter: val => {
+                        return val + '时';
+                    }
+                }
+            });
+            chart.tooltip('hour*value')
+            chart.interval().position('hour*value').color(['#ff873f']);
+            chart.render();
+        }
     }
 }
 </script>

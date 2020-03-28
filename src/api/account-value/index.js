@@ -134,9 +134,21 @@ export function getFollowVerifiedType(params) {
     })
 }
 
-export function getMasterStatusesTimeline(params) {
+export function getStatusesTimeline(params) {
     return new Promise((resolve, reject) => {
-        Axios.get(InterFace.masterStatusesTimeline, {
+        Axios.get(InterFace.statusesTimeline, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getStatusesActiveTime(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.statusesActiveTime, {
             params: params
         }).then(res => {
             resolve(res.data);

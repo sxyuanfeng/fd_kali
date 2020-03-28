@@ -10,5 +10,6 @@ export default {
     followAddV: '/api/followaddv',
     followMeasure: '/api/followmeasure',
     followVerifiedType: '/api/followverifiedtype',
-    masterStatusesTimeline: '/api/masterstatusestimeline',
+    statusesTimeline: '/api/statusestimeline',
+    statusesActiveTime: '/api/statusesactivetime',
 };
