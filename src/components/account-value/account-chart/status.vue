@@ -54,12 +54,49 @@
                     <div id="statuses-active-time"></div>
                 </div>
             </div>
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">微博指标趋势</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div id="statuses-index"></div>
+                </div>
+            </div>
+            <el-row>
+                <el-col :span="12">
+                    <div class="chart-wrapper">
+                        <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                            <el-breadcrumb-item>
+                                <font class="breadcrumb-name">原创微博分析</font>
+                            </el-breadcrumb-item>
+                        </el-breadcrumb>
+                        <div class="panel-box">
+                            <div id="statuses-retweet"></div>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :span="12">
+                    <div class="chart-wrapper">
+                        <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                            <el-breadcrumb-item>
+                                <font class="breadcrumb-name">原创微博分析</font>
+                            </el-breadcrumb-item>
+                        </el-breadcrumb>
+                        <el-table :data="tableData" border style="width: 100%" class="table-wrapper">
+                            <el-table-column prop="notretweet" label="原创微博"></el-table-column>
+                            <el-table-column prop="retweet" label="转发微博"></el-table-column>
+                        </el-table>
+                    </div>
+                </el-col>
+            </el-row>
         </el-scrollbar>
     </div>
 </template>
 
 <script>
-import { getStatusesTimeline, getStatusesActiveTime } from '../../../api/account-value/index';
+import { getStatusesTimeline, getStatusesActiveTime, getStatusesIndex, getStatusesRetweet } from '../../../api/account-value/index';
 import { format, differenceInDays } from 'date-fns'
 import G2 from '@antv/g2'
 import MblogShow from '../../mblog-show';
@@ -80,6 +117,9 @@ export default {
             top3Repost: [],
             activeName: 'attitude',
             statusesActiveTimeData: [],
+            statusesIndexData: [],
+            statusesRetweetData: [],
+            tableData: [],
         }
     },
     created() {
@@ -105,6 +145,26 @@ export default {
                     this.statusesActiveTimeData = newData;
                 }
             }
+        ),
+        getStatusesIndex({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    this.statusesIndexData = res.Data;
+                }
+            }
+        ),
+        getStatusesRetweet({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    this.statusesRetweetData = res.Data;
+                    this.tableData = [
+                        {'notretweet': res.Data[1]['value'] + '篇',
+                        'retweet': res.Data[0]['value'] + '篇'},
+                        {'notretweet': res.Data[1]['percent'] + '%',
+                        'retweet': res.Data[0]['percent'] + '%'},
+                    ]
+                }
+            }
         )
     },
     watch: {
@@ -113,6 +173,12 @@ export default {
         },
         'statusesActiveTimeData': function() {
             this.paintStatusesActiveTime();
+        },
+        'statusesIndexData': function() {
+            this.paintStatusesIndex();
+        },
+        'statusesRetweetData': function() {
+            this.paintStatusesRetweet();
         }
     },
     methods: {
@@ -156,7 +222,8 @@ export default {
             chart.source(this.statusesTimelineData);
             chart.scale({
                 value: {
-                    min: 0
+                    min: 0,
+                    tickInterval: 1,
                 },
                 time: {
                     range: [ 0, 1 ]
@@ -170,12 +237,16 @@ export default {
                 }
             });
             chart.tooltip({
-                crosshairs: {
-                    type: 'line'
+                showTitle: false,
+                itemTpl: '<ul><li>时段：{name}</li><li>数量：{value}</li></ul>'//定义标头
+            });
+            chart.area().position('time*value').color('time', [ '#E74C3C' ]).shape('smooth').tooltip('time*value', function(time, value) {
+                return {
+                    name: time,
+                    value: value,
                 }
             });
-            chart.area().position('time*value').color('time', [ '#E74C3C' ]).shape('smooth');
-            chart.line().position('time*value').color('time', [ '#E74C3C' ]).size(2).shape('smooth');
+            chart.line().position('time*value').color('time', [ '#E74C3C' ]).size(2).shape('smooth').tooltip(false);
             chart.render();
         },
         paintStatusesActiveTime() {
@@ -211,10 +282,168 @@ export default {
                     }
                 }
             });
-            chart.tooltip('hour*value')
-            chart.interval().position('hour*value').color(['#ff873f']);
+            chart.tooltip({
+                showTitle: false,
+                itemTpl: '<ul><li>时段：{name}时</li><li>数量：{value}条</li></ul>'//定义标头
+            });
+            chart.interval().position('hour*value').color(['#ff873f']).tooltip('hour*value', function(hour, value) {
+                return {
+                    name: hour,
+                    value: value,
+                }
+            });
             chart.render();
-        }
+        },
+        paintStatusesIndex() {
+            let chart = new G2.Chart({
+                container: 'statuses-index',
+                forceFit: true,
+                height: 400,
+                padding: [ 20, 40, 80, 60 ]
+            });
+            chart.source(this.statusesIndexData, {
+                index: {
+                    type: 'linear',
+                }
+            });
+            chart.scale({
+                index: {
+                    minLimit: 1
+                },
+                value: {
+                    tickInterval: 1
+                }
+            })
+            chart.tooltip({
+                crosshairs: {
+                    type: 'line'
+                }
+            });
+            chart.axis('value', {
+                label: {
+                    offset: 25
+                }
+            });
+            chart.area().position('index*value').color('name').shape('smooth');
+            chart.line().position('index*value').color('name')
+                .size(2).shape('smooth');
+            chart.render();
+        },
+        paintStatusesRetweet() {
+            const Shape = G2.Shape;
+            // 自定义Shape 部分
+            Shape.registerShape('point', 'pointer', {
+                drawShape(cfg, group) {
+                    const center = this.parsePoint({ // 获取极坐标系下画布中心点
+                        x: 0,
+                        y: 0
+                    });
+                    // 绘制指针
+                    group.addShape('line', {
+                        attrs: {
+                            x1: center.x,
+                            y1: center.y,
+                            x2: cfg.x,
+                            y2: cfg.y,
+                            stroke: cfg.color,
+                            lineWidth: 5,
+                            lineCap: 'round'
+                        }
+                    });
+                    return group.addShape('circle', {
+                        attrs: {
+                            x: center.x,
+                            y: center.y,
+                            r: 9.75,
+                            stroke: cfg.color,
+                            lineWidth: 4.5,
+                            fill: '#fff'
+                        }
+                    });
+                }
+            });
+            const data = [
+                { value: this.statusesRetweetData[1]['percent']/10 }
+            ];
+            const chart = new G2.Chart({
+                container: 'statuses-retweet',
+                forceFit: true,
+                height: 200,
+                padding: [ 0, 0, 30, 0 ]
+            });
+            chart.source(data);
+            chart.coord('polar', {
+                startAngle: -9 / 8 * Math.PI,
+                endAngle: 1 / 8 * Math.PI,
+                radius: 0.75
+            });
+            chart.scale('value', {
+                min: 0,
+                max: 10,
+                tickInterval: 1,
+                nice: false
+            });
+            chart.axis('1', false);
+            chart.axis('value', {
+                zIndex: 2,
+                line: null,
+                label: {
+                    offset: -16,
+                    textStyle: {
+                        fontSize: 18,
+                        textAlign: 'center',
+                        textBaseline: 'middle'
+                    }
+                },
+                subTickCount: 4,
+                subTickLine: {
+                    length: -8,
+                    stroke: '#fff',
+                    strokeOpacity: 1
+                },
+                tickLine: {
+                    length: -17,
+                    stroke: '#fff',
+                    strokeOpacity: 1
+                },
+                grid: null
+            });
+            chart.legend(false);
+            chart.point().position('value*1')
+            .shape('pointer')
+            .color('#1890FF')
+            .active(false);
+            // 绘制仪表盘背景
+            chart.guide().arc({
+                zIndex: 0,
+                top: false,
+                start: [ 0, 0.945 ],
+                end: [ 10, 0.945 ],
+                style: { // 底灰色
+                    stroke: '#CBCBCB',
+                    lineWidth: 18
+                }
+            });
+            // 绘制指标
+            chart.guide().arc({
+                zIndex: 1,
+                start: [ 0, 0.945 ],
+                end: [ data[0].value, 0.945 ],
+                style: {
+                    stroke: '#1890FF',
+                    lineWidth: 18
+                }
+            });
+            // 绘制指标数字
+            chart.guide().html({
+                position: [ '50%', '95%' ],
+                html: '<div style="width: 300px;text-align: center;">'
+                    + '<p style="font-size: 16px; color: #545454;margin: 0;">原创率</p>'
+                    + '<p style="font-size: 20px;color: #545454;margin: 0;">' + this.statusesRetweetData[1]['percent'] + '%</p>'
+                    + '</div>'
+            });
+            chart.render();
+        },
     }
 }
 </script>
@@ -284,6 +513,13 @@ export default {
     font-size: 13px;
     color:darkgray;
     margin-bottom: 10px;
+}
+
+.table-wrapper {
+    background-color: #fdfdfd;
+    margin-top: 10px;
+    position: relative;
+    right: 15px;
 }
 
 </style>

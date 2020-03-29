@@ -12,4 +12,6 @@ export default {
     followVerifiedType: '/api/followverifiedtype',
     statusesTimeline: '/api/statusestimeline',
     statusesActiveTime: '/api/statusesactivetime',
+    statusesIndex: '/api/statusesindex',
+    statusesRetweet: '/api/statusesretweet',
 };

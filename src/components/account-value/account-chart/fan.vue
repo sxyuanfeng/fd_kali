@@ -372,6 +372,9 @@ export default {
                     offset: 12
                 }
             });
+            chart.tooltip({
+                showTitle: false,
+            })
             chart.coord().transpose();
             chart.interval().position('amount*percent').color('amount', [ '#ff873f' ]);
             chart.render();

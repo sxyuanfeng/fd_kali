@@ -158,3 +158,27 @@ export function getStatusesActiveTime(params) {
     })
 }
 
+export function getStatusesIndex(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.statusesIndex, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getStatusesRetweet(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.statusesRetweet, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
