@@ -91,12 +91,22 @@
                     </div>
                 </el-col>
             </el-row>
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">微博来源</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div id="statuses-source"></div>
+                </div>
+            </div>
         </el-scrollbar>
     </div>
 </template>
 
 <script>
-import { getStatusesTimeline, getStatusesActiveTime, getStatusesIndex, getStatusesRetweet } from '../../../api/account-value/index';
+import { getStatusesTimeline, getStatusesActiveTime, getStatusesIndex, getStatusesRetweet, getStatusesSource } from '../../../api/account-value/index';
 import { format, differenceInDays } from 'date-fns'
 import G2 from '@antv/g2'
 import MblogShow from '../../mblog-show';
@@ -120,6 +130,7 @@ export default {
             statusesIndexData: [],
             statusesRetweetData: [],
             tableData: [],
+            statusesSourceData: [],
         }
     },
     created() {
@@ -165,6 +176,13 @@ export default {
                     ]
                 }
             }
+        ),
+        getStatusesSource({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    this.statusesSourceData = res.Data;
+                }
+            }
         )
     },
     watch: {
@@ -179,6 +197,9 @@ export default {
         },
         'statusesRetweetData': function() {
             this.paintStatusesRetweet();
+        },
+        'statusesSourceData': function() {
+            this.paintStatusesSource();
         }
     },
     methods: {
@@ -444,6 +465,33 @@ export default {
             });
             chart.render();
         },
+        paintStatusesSource() {
+            let chart = new G2.Chart({
+                container: 'statuses-source',
+                forceFit: true,
+                height: 400,
+                padding: [ 20, 20, 20, 150 ]
+            });
+            chart.source(this.statusesSourceData, {
+                        value: {
+                            formatter: val => {
+                                val = val + '%';
+                            return val;
+                        }
+                    }
+                });
+            chart.axis('source', {
+                label: {
+                    offset: 12
+                }
+            });
+            chart.tooltip({
+                showTitle: false,
+            })
+            chart.coord().transpose();
+            chart.interval().position('source*value').color('source', [ '#ff873f' ]);
+            chart.render();
+        }
     }
 }
 </script>

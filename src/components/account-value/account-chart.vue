@@ -6,7 +6,7 @@
                     <el-tab-pane label="关注画像" name="follow"></el-tab-pane>
                     <el-tab-pane label="粉丝画像" name="fan"></el-tab-pane>
                     <el-tab-pane label="微博分析" name="status"></el-tab-pane>
-                    <el-tab-pane label="总览" name="fourth"></el-tab-pane>
+                    <el-tab-pane label="总览" name="overview"></el-tab-pane>
                     <router-view></router-view>
                 </el-tabs>
             </el-card>
@@ -29,6 +29,7 @@ export default {
                 'follow': '/accountvalue/follow',
                 'fan': '/accountvalue/fan',
                 'status': '/accountvalue/status',
+                'overview': '/accountvalue/overview',
             }
         }
     },

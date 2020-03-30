@@ -90,6 +90,31 @@
                     <div id="fan-verified-type"></div>
                 </div>
             </div>
+            <!--
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">粉丝位置分布</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div class="flex">
+                        <iframe ref="fanAreaChart" frameborder="0" width="420px" height="350px" srcdoc=""></iframe>
+                        <ul class="item-ul">
+                            <li class="item-li">
+                                <font>海外: {{ fanAreaData['海外'] || 0 }}</font>
+                            </li>
+                            <li class="item-li">
+                                <font>其他: {{ fanAreaData['其他'] || 0 }}</font>
+                            </li>
+                            <li class="item-li">
+                                <font>未知: {{ fanAreaData['未知'] || 0 }}</font>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            -->
         </el-scrollbar>
 
     </div>
@@ -154,6 +179,15 @@ export default {
                 }
             }
         )
+        /** 
+        getFanArea({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    this.$refs.fanAreaChart.srcdoc = res.Map;
+                    this.fanAreaData = res.Data;
+                }
+            }
+        )*/
     },
     watch: {
         'fanAddVData': function() {
@@ -514,6 +548,21 @@ export default {
     color: #303133;
     font-size: 20px;
     margin: 5px 0 5px 10px;
+}
+
+.item-ul {
+    margin-right: 100px;
+}
+
+.item-li {
+    text-align: left;
+    margin-bottom: 20px;
+    color: #ff873f;
+    list-style: circle;
+}
+
+.item-li font {
+    color: gray;
 }
 
 </style>

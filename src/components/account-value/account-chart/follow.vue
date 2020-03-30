@@ -64,6 +64,31 @@
                     <div id="follow-verified-type"></div>
                 </div>
             </div>
+            <!--
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">关注位置分布</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div class="flex">
+                        <iframe ref="followAreaChart" frameborder="0" width="420px" height="350px" srcdoc=""></iframe>
+                        <ul class="item-ul">
+                            <li class="item-li">
+                                <font>海外: {{ followAreaData['海外'] || 0 }}</font>
+                            </li>
+                            <li class="item-li">
+                                <font>其他: {{ followAreaData['其他'] || 0 }}</font>
+                            </li>
+                            <li class="item-li">
+                                <font>未知: {{ followAreaData['未知'] || 0 }}</font>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            -->
         </el-scrollbar>
     </div>
 </template>
@@ -111,6 +136,15 @@ export default {
                 }
             }
         )
+        /** 
+        getFollowArea({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    this.$refs.followAreaChart.srcdoc = res.Map;
+                    this.followAreaData = res.Data;
+                }
+            }
+        )*/
     },
     watch: {
         'followAddVData': function() {
@@ -348,6 +382,21 @@ export default {
     color: #303133;
     font-size: 20px;
     margin: 5px 0 5px 10px;
+}
+
+.item-ul {
+    margin-right: 100px;
+}
+
+.item-li {
+    text-align: left;
+    margin-bottom: 20px;
+    color: #ff873f;
+    list-style: circle;
+}
+
+.item-li font {
+    color: gray;
 }
 
 </style>

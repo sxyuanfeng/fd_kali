@@ -28,6 +28,10 @@ const routes = [
             {
                 path: 'status',
                 component: () => import('../components/account-value/account-chart/status.vue')
+            },
+            {
+                path: 'overview',
+                component: () => import('../components/account-value/account-chart/overview.vue')
             }
         ]
     },

@@ -182,3 +182,52 @@ export function getStatusesRetweet(params) {
     })
 }
 
+export function getStatusesSource(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.statusesSource, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getAccountOverview(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.accountOverview, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+/** 
+export function getFanArea(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.fanArea, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getFollowArea(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.followArea, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+*/
