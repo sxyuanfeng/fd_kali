@@ -1,6 +1,9 @@
 <template>
     <div class="page-header-wrapper">
-        <span>KaLi</span>
+        <div class="font-wrapper">
+            <font>KaLi</font>
+        </div>
+        <span class="span-wrapper">微博数据分析平台</span>
     </div>
 </template>
 
@@ -14,6 +17,24 @@ export default {
 .page-header-wrapper {
     height: 50px;
     background: #656565;
+    display: flex;
+}
+
+.font-wrapper {
+    width: 200px;
+    padding: auto 10px;
+    background: #343434;
+}
+
+font {
+    color: #fff;
+    font-size: 50px;
+}
+
+.span-wrapper {
+    font-size: 25px;
+    margin: auto 10px;
+    color: hsla(0,0%,100%,.5);
 }
 
 </style>

@@ -331,9 +331,6 @@ export default {
                 index: {
                     minLimit: 1
                 },
-                value: {
-                    tickInterval: 1
-                }
             })
             chart.tooltip({
                 crosshairs: {

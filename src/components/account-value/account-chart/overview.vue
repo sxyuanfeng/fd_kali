@@ -9,29 +9,29 @@
                 </el-breadcrumb>
                 <div class="panel-box flex">
                     <div class="circle-progress-wrapper">
-                        <el-progress type="circle" color="rgb(103,194,58)" :percentage="25" stroke-width="13" :format="circleFormat"></el-progress>
+                        <el-progress type="circle" color="rgb(103,194,58)" :percentage="computedOverview(accountOverviewData, computedActive(accountOverviewData['活跃度']))" stroke-width="13" :format="circleFormat"></el-progress>
                         <font style="color: darkgray; margin-top: 10px;">综合评分</font>
                     </div>
                     <div class="progress-flex line-progress-wrapper">
                         <div class="line-progress">
                             <font class="progress-font">广告投放价值</font>
-                            <el-progress :percentage="50" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress"></el-progress>
+                            <el-progress :percentage="accountOverviewData['广告投放价值']" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress" :format="lineFormat"></el-progress>
                         </div>
                         <div class="line-progress">
-                            <font class="progress-font">广告投放价值</font>
-                            <el-progress :percentage="50" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress"></el-progress>
+                            <font class="progress-font">粉丝质量</font>
+                            <el-progress :percentage="accountOverviewData['粉丝质量']" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress" :format="lineFormat"></el-progress>
                         </div>
                         <div class="line-progress">
                             <font class="progress-font">活跃度</font>
-                            <el-progress :percentage="50" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress"></el-progress>
+                            <el-progress :percentage="computedActive(accountOverviewData['活跃度'])" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress" :format="lineFormat"></el-progress>
                         </div>
                         <div class="line-progress">
                             <font class="progress-font">原创度</font>
-                            <el-progress :percentage="50" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress"></el-progress>
+                            <el-progress :percentage="accountOverviewData['原创度']" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress" :format="lineFormat"></el-progress>
                         </div>
                         <div class="line-progress">
                             <font class="progress-font">影响力</font>
-                            <el-progress :percentage="50" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress"></el-progress>
+                            <el-progress :percentage="accountOverviewData['影响力']" color="rgb(103,194,58)" stroke-width="13" class="progress-flex line-progress" :format="lineFormat"></el-progress>
                         </div>
                     </div>
                 </div>
@@ -41,12 +41,13 @@
 </template>
 
 <script>
-import { getAccountOverview } from '../../../api/account-value/index'
+import { getAccountOverview } from '../../../api/account-value/index';
+import { differenceInDays } from 'date-fns';
 
 export default {
     data() {
         return {
-            accountOverviewData: [],
+            accountOverviewData: {},
         }
     },
     created() {
@@ -61,6 +62,15 @@ export default {
     methods: {
         circleFormat(percentage) {
             return percentage + '分';
+        },
+        lineFormat(percentage) {
+            return percentage + '/100';
+        },
+        computedActive(value) {
+            return (Math.abs(1000 / differenceInDays(new Date(value[1]), new Date(value[0])))).toFixed(1);
+        },
+        computedOverview(val1, val2) {
+            return ((val1['广告投放价值']+val1['影响力']+val1['粉丝质量']+val1['原创度']+parseFloat(val2)) / 5).toFixed(1);
         }
     }
 }

@@ -85,6 +85,18 @@ export function getFanVerifiedType(params) {
     })
 }
 
+export function getFanMbrank(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.fanMbrank, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data);    
+        })
+    })
+}
+
 export function getFollowGender(params) {
     return new Promise((resolve, reject) => {
         Axios.get(InterFace.followGender, {
@@ -125,6 +137,18 @@ export function getFollowMeasure(params) {
 export function getFollowVerifiedType(params) {
     return new Promise((resolve, reject) => {
         Axios.get(InterFace.followVerifiedType, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err =>{
+            reject(err.data);    
+        })
+    })
+}
+
+export function getFollowMbrank(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.followMbrank, {
             params: params
         }).then(res => {
             resolve(res.data);

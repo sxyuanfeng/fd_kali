@@ -64,6 +64,16 @@
                     <div id="follow-verified-type"></div>
                 </div>
             </div>
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">VIP等级</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div id="follow-mbrank"></div>
+                </div>
+            </div>
             <!--
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
@@ -96,7 +106,7 @@
 <script>
 import G2 from '@antv/g2';
 import DataSet from '@antv/data-set';
-import { getFollowGender, getFollowAddV, getFollowMeasure, getFollowVerifiedType } from '../../../api/account-value/index';
+import { getFollowGender, getFollowAddV, getFollowMeasure, getFollowVerifiedType, getFollowMbrank } from '../../../api/account-value/index';
 
 export default {
     data() {
@@ -105,6 +115,7 @@ export default {
             followAddVData: [],
             followMeasureData: [],
             followVerifiedTypeData: [],
+            followMbrankData: [],
         }
     },
     created() {
@@ -135,6 +146,13 @@ export default {
                     this.followVerifiedTypeData = res.Data;
                 }
             }
+        ),
+        getFollowMbrank({'master_id': this.$route.query.AccountMid}).then(
+            res => {
+                if (res.Code === 1) {
+                    this.followMbrankData = res.Data;
+                }
+            }
         )
         /** 
         getFollowArea({'master_id': this.$route.query.AccountMid}).then(
@@ -155,6 +173,9 @@ export default {
         },
         'followVerifiedTypeData': function() {
             this.paintFollowVerifiedType();
+        },
+        'followMbrankData': function() {
+            this.paintFollowMbrank();
         }
     },
     methods: {
@@ -311,6 +332,48 @@ export default {
             chart.area().position('item*score').color('label');
             chart.render();
         },
+        paintFollowMbrank() {
+            let chart = new G2.Chart({
+                container: 'follow-mbrank',
+                forceFit: true,
+                height: 400,
+                padding: [ 20, 80, 20, 80 ]
+            });
+            chart.source(this.followMbrankData, {
+                percent: {
+                    nice: false
+                }
+            });
+            chart.axis(false);
+            chart.tooltip({
+                showTitle: false,
+                itemTpl: '<li data-index={index} style="margin-bottom:4px;">'
+                    + '<span style="background-color:{color};" class="g2-tooltip-marker"></span>'
+                    + '{name}<br/>'
+                    + '<span style="padding-left: 16px">占比：{percent}</span><br/>'
+                    + '</li>'
+            });
+            chart.coord('rect').transpose().scale(1, -1);
+            chart.intervalSymmetric().position('item*percent')
+            .shape('funnel')
+            .color('item', [ '#0050B3', '#1890FF', '#40A9FF', '#69C0FF', '#BAE7FF' ])
+            .label('item*percent', (item, percent) => {
+                return item + ' ' + percent + '%';
+            }, {
+                offset: 35,
+                labelLine: {
+                    lineWidth: 1,
+                    stroke: 'rgba(0, 0, 0, 0.15)'
+                }
+            })
+            .tooltip('item*percent', (item, percent) => {
+                return {
+                    name: item,
+                    percent: percent + '%',
+                };
+            });
+            chart.render();
+        }
     }
 }
 </script>
