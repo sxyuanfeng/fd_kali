@@ -5,6 +5,8 @@ import AccountValueSearch from '../pages/search/account-value-search';
 import HotTag from '../pages/hot-tag';
 import Repost from '../pages/repost';
 import RepostSearch from '../pages/search/repost-search';
+import MblogSearch from '../pages/search/mblog-search';
+import Mblog from '../pages/mblog';
 
 Vue.use(VueRouter);
 
@@ -32,6 +34,28 @@ const routes = [
             {
                 path: 'overview',
                 component: () => import('../components/account-value/account-chart/overview.vue')
+            }
+        ]
+    },
+    {
+        path: '/mblogsearch',
+        component: MblogSearch
+    },
+    {
+        path: '/mblog',
+        component: Mblog,
+        children: [
+            {
+                path: 'participant',
+                component: () => import('../components/mblog/mblog-chart/participant.vue')
+            },
+            {
+                path: 'spread',
+                component: () => import('../components/mblog/mblog-chart/spread.vue')
+            },
+            {
+                path: 'overview',
+                component: () => import('../components/mblog/mblog-chart/overview.vue')
             }
         ]
     },

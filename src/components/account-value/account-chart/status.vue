@@ -107,8 +107,8 @@
 
 <script>
 import { getStatusesTimeline, getStatusesActiveTime, getStatusesIndex, getStatusesRetweet, getStatusesSource } from '../../../api/account-value/index';
-import { format, differenceInDays } from 'date-fns'
-import G2 from '@antv/g2'
+import { format, differenceInDays } from 'date-fns';
+import G2 from '@antv/g2';
 import MblogShow from '../../mblog-show';
 
 export default {

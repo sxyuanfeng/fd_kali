@@ -16,7 +16,7 @@ export default {
 <style scoped>
 .page-header-wrapper {
     height: 50px;
-    background: #656565;
+    background: #24292e;
     display: flex;
 }
 
