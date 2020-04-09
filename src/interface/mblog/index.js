@@ -10,4 +10,8 @@ export default {
     spreadRepostRelative: '/api/spreadrepostrelative',
     spreadRepostDeep: '/api/spreadrepostdeep',
     spreadRepostKeyuser: '/api/spreadrepostkeyuser',
+    spreadRepostKeyuserRoad: '/api/spreadrepostkeyuserroad',
+    spreadRepostBoom: '/api/spreadrepostboom',
+    spreadOverview: '/api/spreadoverview',
+    repostWordcloud: '/api/repostwordcloud',
 }

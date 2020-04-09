@@ -133,3 +133,51 @@ export function getSpreadRepostKeyuser(params) {
     })
 }
 
+export function getSpreadRepostKeyuserRoad(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.spreadRepostKeyuserRoad, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getSpreadRepostBoom(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.spreadRepostBoom, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getSpreadOverview(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.spreadOverview, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getRepostWordcloud(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.repostWordcloud, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
