@@ -7,6 +7,7 @@ import Repost from '../pages/repost';
 import RepostSearch from '../pages/search/repost-search';
 import MblogSearch from '../pages/search/mblog-search';
 import Mblog from '../pages/mblog';
+import RentingSearch from '../pages/search/renting-search'
 
 Vue.use(VueRouter);
 
@@ -58,6 +59,10 @@ const routes = [
                 component: () => import('../components/mblog/mblog-chart/overview.vue')
             }
         ]
+    },
+    {
+        path: '/rentingsearch',
+        component: RentingSearch,
     },
     {
         path: '/hottag',

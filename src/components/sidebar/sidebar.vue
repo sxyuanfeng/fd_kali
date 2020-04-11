@@ -10,10 +10,14 @@
                 <span slot="title" @click="$router.push({path: '/mblogsearch'})">微博分析</span>
             </el-menu-item>
             <el-menu-item index="3">
+                <i class="el-icon-office-building"></i>
+                <span slot="title" @click="$router.push({path: '/rentingsearch'})">微博租房</span>
+            </el-menu-item>
+            <el-menu-item index="4">
                 <i class="el-icon-document"></i>
                 <span slot="title" @click="$router.push({path: '/hottag'})">热搜词云</span>
             </el-menu-item>
-            <el-menu-item index="4">
+            <el-menu-item index="5">
                 <i class="el-icon-setting"></i>
                 <span slot="title" @click="$router.push({path: '/repostsearch'})">微博转发关系图</span>
             </el-menu-item>
