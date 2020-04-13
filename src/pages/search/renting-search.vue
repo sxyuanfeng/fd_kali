@@ -1,13 +1,20 @@
 <template>
     <div class="renting-search-wrapper">
-        <el-cascader :options="options" :show-all-levels="false"></el-cascader>
+        <div class="flex">
+            <el-cascader :options="options" :show-all-levels="false" v-model="city"></el-cascader>
+            <el-button @click="handleGoCity" slot="append" icon="el-icon-search" style="background: #ff873f; color: #fff; border-radius: 0 3px 3px 0">搜索</el-button>
+        </div>
+        <iframe ref="countrycityrenting" frameborder="0" width="1100px" height="600px" srcdoc=""></iframe>
     </div>
 </template>
 
 <script>
+import { getCountryCityRenting } from '../../api/renting/index';
+
 export default {
     data() {
         return {
+            city: [],
             options: [{
                 value: '北京',
                 label: '北京'
@@ -1050,10 +1057,47 @@ export default {
             },
             ]
         }
+    },
+    created() {
+        getCountryCityRenting().then(
+            res => {
+                this.$refs.countrycityrenting.srcdoc = res.Data;
+            }
+        )
+    },
+    methods: {
+        handleGoCity() {
+            if (this.city.length > 0) {
+                if (this.city.length === 1) {
+                    this.$router.push({
+                        path: '/renting',
+                        query: {
+                            City: this.city[0],
+                        }
+                    });
+                } else {
+                    this.$router.push({
+                        path: '/renting',
+                        query: {
+                            City: this.city[1],
+                        }
+                    });
+                }
+            }
+        }
     }
 }
 </script>
 
 <style scoped>
+.renting-search-wrapper {
+    height: calc(100vh - 80px);
+    background: #F8F9F9;
+    padding: 15px;
+}
+
+.flex {
+    display: flex;
+}
 
 </style>

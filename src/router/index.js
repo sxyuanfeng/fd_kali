@@ -7,7 +7,8 @@ import Repost from '../pages/repost';
 import RepostSearch from '../pages/search/repost-search';
 import MblogSearch from '../pages/search/mblog-search';
 import Mblog from '../pages/mblog';
-import RentingSearch from '../pages/search/renting-search'
+import RentingSearch from '../pages/search/renting-search';
+import Renting from '../pages/renting';
 
 Vue.use(VueRouter);
 
@@ -63,6 +64,24 @@ const routes = [
     {
         path: '/rentingsearch',
         component: RentingSearch,
+    },
+    {
+        path: '/renting',
+        component: Renting,
+        children: [
+            {
+                path: 'rentingwordcloud',
+                component: () => import('../components/renting/renting-wordcloud.vue')
+            },
+            {
+                path: 'rentinghuntinglist',
+                component: () => import('../components/renting/renting-hunting-list.vue')
+            },
+            {
+                path: 'rentingoutlist',
+                component: () => import('../components/renting/renting-out-list.vue')
+            },
+        ]
     },
     {
         path: '/hottag',
