@@ -14,6 +14,11 @@
                 <span slot="title" @click="$router.push({path: '/rentingsearch'})">微博租房</span>
             </el-menu-item>
             <el-menu-item index="4">
+                <i class="iconfont icon-bingdu" style="font-size: 19px;"></i>&nbsp;
+                <span slot="title" @click="$router.push({path: '/covid'})">新冠肺炎</span>
+            </el-menu-item>
+            <!--
+            <el-menu-item index="4">
                 <i class="el-icon-document"></i>
                 <span slot="title" @click="$router.push({path: '/hottag'})">热搜词云</span>
             </el-menu-item>
@@ -21,6 +26,7 @@
                 <i class="el-icon-setting"></i>
                 <span slot="title" @click="$router.push({path: '/repostsearch'})">微博转发关系图</span>
             </el-menu-item>
+            -->
         </el-menu>
     </div>
 </template>

@@ -67,7 +67,7 @@ export default {
             return percentage + '/100';
         },
         computedActive(value) {
-            return (Math.abs(1000 / differenceInDays(new Date(value[1]), new Date(value[0])))).toFixed(1);
+            return (value[2]*10 / differenceInDays(new Date(value[1]), new Date(value[0]))).toFixed(1);
         },
         computedOverview(val1, val2) {
             return ((val1['广告投放价值']+val1['影响力']+val1['粉丝质量']+val1['原创度']+parseFloat(val2)) / 5).toFixed(1);

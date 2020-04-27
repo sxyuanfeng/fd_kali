@@ -9,6 +9,7 @@ import MblogSearch from '../pages/search/mblog-search';
 import Mblog from '../pages/mblog';
 import RentingSearch from '../pages/search/renting-search';
 import Renting from '../pages/renting';
+import Covid from '../pages/covid';
 
 Vue.use(VueRouter);
 
@@ -82,6 +83,10 @@ const routes = [
                 component: () => import('../components/renting/renting-out-list.vue')
             },
         ]
+    },
+    {
+        path: '/covid',
+        component: Covid,
     },
     {
         path: '/hottag',
