@@ -1,3 +1,5 @@
 export default {
-    hottag: '/api/hottag',
+    covidTimeline: '/api/covidtimeline',
+    covidActiveUser: '/api/covidactiveuser',
+    covidOverseaCountry: '/api/covidoverseacountry',
 }
