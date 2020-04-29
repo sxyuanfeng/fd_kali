@@ -30,3 +30,23 @@ export function getCovidOverseaCountry() {
         })
     })
 }
+
+export function getCovidWuhanHot() {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.covidWuhanHot).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getCovidOverseaHot() {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.covidOverseaHot).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
