@@ -50,3 +50,23 @@ export function getCovidOverseaHot() {
         })
     })
 }
+
+export function getCovidOverseaEmotiom() {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.covidOverseaEmotion).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
+export function getCovidWuhanEmotiom() {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.covidWuhanEmotion).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}

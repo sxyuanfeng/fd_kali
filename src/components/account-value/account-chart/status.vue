@@ -54,16 +54,7 @@
                     <div id="statuses-active-time"></div>
                 </div>
             </div>
-            <div class="chart-wrapper">
-                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item>
-                        <font class="breadcrumb-name">微博指标趋势</font>
-                    </el-breadcrumb-item>
-                </el-breadcrumb>
-                <div class="panel-box">
-                    <div id="statuses-index"></div>
-                </div>
-            </div>
+            
             <el-row>
                 <el-col :span="12">
                     <div class="chart-wrapper">
@@ -91,6 +82,16 @@
                     </div>
                 </el-col>
             </el-row>
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">微博指标趋势</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div id="statuses-index"></div>
+                </div>
+            </div>
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
                     <el-breadcrumb-item>
@@ -238,7 +239,7 @@ export default {
                 container: 'statuses-timeline',
                 forceFit: true,
                 height: 300,
-                padding: [ 20, 20, 30, 40 ]
+                padding: [ 20, 40, 30, 40 ]
             });
             chart.source(this.statusesTimelineData);
             chart.scale({
@@ -466,7 +467,7 @@ export default {
             let chart = new G2.Chart({
                 container: 'statuses-source',
                 forceFit: true,
-                height: 400,
+                height: 300,
                 padding: [ 20, 20, 20, 150 ]
             });
             chart.source(this.statusesSourceData, {
@@ -496,7 +497,7 @@ export default {
 <style scoped>
 .status-wrapper {
     width: 100%;
-    height: 83vh;
+    height: 100vh;
 }
 
 .vertical-bar::before{

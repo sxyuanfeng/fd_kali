@@ -44,6 +44,16 @@
                     </div>
                 </el-col>
             </el-row>
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">粉丝量级分布</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div id="fan-measure"></div>
+                </div>
+            </div>
             <el-row :gutter="10">
                 <el-col :span="12">
                     <div class="chart-wrapper">
@@ -70,16 +80,7 @@
                     </div>
                 </el-col>
             </el-row>
-            <div class="chart-wrapper">
-                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
-                    <el-breadcrumb-item>
-                        <font class="breadcrumb-name">粉丝量级分布</font>
-                    </el-breadcrumb-item>
-                </el-breadcrumb>
-                <div class="panel-box">
-                    <div id="fan-measure"></div>
-                </div>
-            </div>
+
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
                     <el-breadcrumb-item>
@@ -90,6 +91,7 @@
                     <div id="fan-verified-type"></div>
                 </div>
             </div>
+            
             <div class="chart-wrapper">
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
                     <el-breadcrumb-item>
@@ -547,7 +549,7 @@ export default {
 <style scoped>
 .fan-wrapper {
     width: 100%;
-    height: 83vh;
+    height: 100vh;
 }
 
 .vertical-bar::before{

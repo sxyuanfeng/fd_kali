@@ -11,12 +11,22 @@
                     <div id="renting-wordcloud"></div>
                 </div>
             </div>
+            <div class="chart-wrapper">
+                <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                    <el-breadcrumb-item>
+                        <font class="breadcrumb-name">房源要求</font>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+                <div class="panel-box">
+                    <div id="renting-hot"></div>
+                </div>
+            </div>
         </el-scrollbar>
     </div>
 </template>
 
 <script>
-import { getRentingWordcloud } from '../../api/renting/index.js';
+import { getRentingWordcloud, getRentingHot } from '../../api/renting/index.js';
 import G2 from '@antv/g2';
 import DataSet from '@antv/data-set';
 
@@ -24,6 +34,7 @@ export default {
     data() {
         return {
             rentingWordcloudData: [],
+            rentingHotData: [],
         }
     },
     created() {
@@ -31,11 +42,19 @@ export default {
             res => {
                 this.rentingWordcloudData = res.Data;
             }
+        );
+        getRentingHot({'city': this.$route.query.City}).then(
+            res => {
+                this.rentingHotData = res.Data;
+            }
         )
     },
     watch: {
         'rentingWordcloudData': function() {
             this.paintRentingWordcloud();
+        },
+        'rentingHotData': function() {
+            this.paintRentingHot();
         }
     },
     methods: {
@@ -115,6 +134,20 @@ export default {
                     .shape('cloud');
                 chart.render();
             }
+        },
+        paintRentingHot() {
+            const chart = new G2.Chart({
+                container: 'renting-hot',
+                forceFit: true,
+                height: 500,
+                padding: [ 30, 30, 40, 50 ]
+            });
+            chart.source(this.rentingHotData);
+            chart.scale('value', {
+                tickInterval: 20
+            });
+            chart.interval().position('name*value').color('name', [ '#F1948A' ]);
+            chart.render();
         }
     }
 }

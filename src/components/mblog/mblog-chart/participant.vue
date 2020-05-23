@@ -434,7 +434,7 @@ export default {
 <style scoped>
 .participant-wrapper {
     width: 100%;
-    height: 64.5vh;
+    height: 100vh;
 }
 
 .vertical-bar::before{

@@ -24,6 +24,18 @@ export function getRentingWordcloud(params) {
     })
 }
 
+export function getRentingHot(params) {
+    return new Promise((resolve, reject) => {
+        Axios.get(InterFace.rentingHot, {
+            params: params
+        }).then(res => {
+            resolve(res.data);
+        }).catch(err => {
+            reject(err.data);
+        })
+    })
+}
+
 export function getRentingHuntingList(params) {
     return new Promise((resolve, reject) => {
         Axios.get(InterFace.rentingHuntingList, {

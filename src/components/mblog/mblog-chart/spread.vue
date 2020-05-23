@@ -244,7 +244,7 @@ export default {
 <style scoped>
 .spread-wrapper {
     width: 100%;
-    height: 64.5vh;
+    height: 100vh;
 }
 
 .vertical-bar::before{

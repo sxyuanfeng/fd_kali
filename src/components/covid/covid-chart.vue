@@ -52,13 +52,33 @@
                         <div id="covid-wuhan-hot"></div>
                     </div>
                 </div>
+                <div class="chart-wrapper">
+                    <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                        <el-breadcrumb-item>
+                            <font class="breadcrumb-name">对待世界疫情的情绪</font>
+                        </el-breadcrumb-item>
+                    </el-breadcrumb>
+                    <div class="panel-box">
+                        <div id="covid-oversea-emotion"></div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <el-breadcrumb separator-class="el-icon-arrow-right" class="vertical-bar">
+                        <el-breadcrumb-item>
+                            <font class="breadcrumb-name">对待武汉疫情的情绪</font>
+                        </el-breadcrumb-item>
+                    </el-breadcrumb>
+                    <div class="panel-box">
+                        <div id="covid-wuhan-emotion"></div>
+                    </div>
+                </div>
             </el-card>
         </el-scrollbar>
     </div>
 </template>
 
 <script>
-import { getCovidTimeline, getCovidActiveUser, getCovidOverseaCountry, getCovidWuhanHot, getCovidOverseaHot } from '../../api/covid/index';
+import { getCovidTimeline, getCovidActiveUser, getCovidOverseaCountry, getCovidWuhanHot, getCovidOverseaHot, getCovidOverseaEmotiom, getCovidWuhanEmotiom } from '../../api/covid/index';
 import G2 from '@antv/g2';
 import DataSet from '@antv/data-set';
 
@@ -69,6 +89,8 @@ export default {
             covidActiveUserData: [],
             covidWuhanHotData: [],
             covidOverseaHotData: [],
+            covidOverseaEmotionData: [],
+            covidWuhanEmotionData: [],
         }
     },
     created() {
@@ -96,6 +118,16 @@ export default {
             res => {
                 this.covidOverseaHotData = res.Data;
             }
+        );
+        getCovidOverseaEmotiom().then(
+            res => {
+                this.covidOverseaEmotionData = res.Data;
+            }
+        );
+        getCovidWuhanEmotiom().then(
+            res => {
+                this.covidWuhanEmotionData = res.Data;
+            }
         )
     },
     watch: {
@@ -110,6 +142,12 @@ export default {
         },
         'covidOverseaHotData': function() {
             this.paintCovidOverseaHot();
+        },
+        'covidOverseaEmotionData': function() {
+            this.paintCovidOverseaEmotion();
+        },
+        'covidWuhanEmotionData': function() {
+            this.paintCovidWuhanEmotion();
         }
     },
     methods: {
@@ -309,6 +347,94 @@ export default {
                     .shape('cloud');
                 chart.render();
             }
+        },
+        paintCovidOverseaEmotion() {
+            let chart = new G2.Chart({
+                container: 'covid-oversea-emotion',
+                forceFit: true,
+                height: 400,
+                padding: [ 20, 20, 20, 20 ]
+            });
+            chart.source(this.covidOverseaEmotionData, {
+                percent: {
+                    formatter: val => {
+                        val = val + '%';
+                        return val;
+                    }
+                }
+            });
+            chart.coord('theta', {
+                radius: 0.75
+            });
+            chart.tooltip({
+                showTitle: false,
+                itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+            });
+            chart.legend(false);
+            chart.intervalStack()
+                .position('percent')
+                .color('item')
+                .label('percent', {
+                    formatter: (val, item) => {
+                        return item.point.item + ': ' + val;
+                    }
+            })
+            .tooltip('item*percent', (item, percent) => {
+                percent = percent + '%';
+                return {
+                    name: item,
+                    value: percent
+                };
+            })
+            .style({
+                lineWidth: 1,
+                stroke: '#fff'
+            });
+            chart.render();
+        },
+        paintCovidWuhanEmotion() {
+            let chart = new G2.Chart({
+                container: 'covid-wuhan-emotion',
+                forceFit: true,
+                height: 400,
+                padding: [ 20, 20, 20, 20 ]
+            });
+            chart.source(this.covidWuhanEmotionData, {
+                percent: {
+                    formatter: val => {
+                        val = val + '%';
+                        return val;
+                    }
+                }
+            });
+            chart.coord('theta', {
+                radius: 0.75
+            });
+            chart.tooltip({
+                showTitle: false,
+                itemTpl: '<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+            });
+            chart.legend(false);
+            chart.intervalStack()
+                .position('percent')
+                .color('item')
+                .label('percent', {
+                    formatter: (val, item) => {
+                        return item.point.item + ': ' + val;
+                    }
+            })
+            .tooltip('item*percent', (item, percent) => {
+                percent = percent + '%';
+                return {
+                    name: item,
+                    value: percent
+                };
+            })
+            .style({
+                lineWidth: 1,
+                stroke: '#fff'
+            });
+            chart.render();
         }
     }
 }

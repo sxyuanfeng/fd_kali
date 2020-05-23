@@ -4,4 +4,6 @@ export default {
     covidOverseaCountry: '/api/covidoverseacountry',
     covidWuhanHot: '/api/covidwuhanhot',
     covidOverseaHot: '/api/covidoverseahot',
+    covidOverseaEmotion: '/api/covidoverseaemotion',
+    covidWuhanEmotion: '/api/covidwuhanemotion',
 }

@@ -381,7 +381,7 @@ export default {
 <style scoped>
 .follow-wrapper {
     width: 100%;
-    height: 83vh;
+    height: 100vh;
 }
 
 .vertical-bar::before{

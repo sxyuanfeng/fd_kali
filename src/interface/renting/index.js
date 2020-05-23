@@ -3,4 +3,5 @@ export default {
     rentingWordcloud: '/api/rentingwordcloud',
     rentingHuntingList: '/api/rentinghuntinglist',
     rentingOutList: '/api/rentingoutlist',
+    rentingHot: '/api/rentinghot',
 }

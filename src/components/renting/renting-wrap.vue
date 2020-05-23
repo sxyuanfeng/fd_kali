@@ -2,9 +2,11 @@
     <div class="renting-wrap-wrapper">
         <el-card>
             <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="求租" name="rentinghuntinglist"></el-tab-pane>
+                <el-tab-pane label="租房信息展示" name="rentinghuntinglist"></el-tab-pane>
+                <!--
                 <el-tab-pane label="出租" name="rentingoutlist"></el-tab-pane>
-                <el-tab-pane label="城市词云" name="rentingwordcloud"></el-tab-pane>
+                -->
+                <el-tab-pane label="城市租房分析" name="rentingwordcloud"></el-tab-pane>
                 <router-view></router-view>
             </el-tabs>
         </el-card>
